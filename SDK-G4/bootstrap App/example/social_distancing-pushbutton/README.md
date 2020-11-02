@@ -26,15 +26,16 @@ An short alarm (.mp3) can be played for a short duration during the transitions.
 		- for device SMA300
 		- for device DMB400
 - `USB to WPAN` adapter
-	- With this App, an `USB to WPAN` adapter needs to be plugged on the device to work properly else an error is raised. 
+	- With this App, an `USB to WPAN` adapter needs to be plugged on the device to work properly else an error is raised.
+	- Plug the `USB to WPAN` adapter to an USB connector of the `Qeedji` media-player or the `Qeedji` tablet. For further information about the Qeedji `USB to WPAN` adapter, contact support@qeedji.tech. 
 - `EnOcean` device 
 	- Example: `PTM 215B` push button. For further information, contact sales@qeedji.tech
 
-## Qeedji device configuration  
+## Qeedji device configuration 
 
-Plug the `USB to WPAN` adapter to an USB connector of the `Qeedji` media-player or the `Qeedji` tablet. For further information about the Qeedji `USB to WPAN` adapter, contact support@qeedji.tech. 
+### With the device configuration Web interface  
 
-Then connect to the device configuration Web interface:
+Connect to the device configuration Web interface&sup2:
 - in the `Preferences > Maintenance` pane, set the appropriate value for the `innes.adapters.serial.uart_1.syspath` user preference.
 
 | Qeedji device | user preference | default value | value to support the `USB to WPAN` adapter
@@ -44,9 +45,20 @@ Then connect to the device configuration Web interface:
 | DMB400  |`innes.adapters.serial.uart_1.syspath` | /dev/ttyAS1   | /dev/ttyACM0  
 
 - to deal only with only one specific push button, in the `Configuration > Variables` pane, it is advised to enter the push button MAC address in the `field1` variable input with the pattern *AABBCCDDEEFF*.
+ 
+- press on the `Reboot the device` button.
 
-- then reboot the `Qeedji` device. 
-
+### With a configuration script
+Else you can use a configuration by script with the `000000000000.js` script. It allows in one go to: 
+- set *Local deposit* for `Configuration > App`, 
+- set *deactivated* for `Configuration > Output > Soundcard > Mute`,
+- set *deactivated* for the `Maintenance > Testcard`, 
+- set `innes.adapters.serial.uart_1.syspath` user preference to */dev/ttyACM0*.
+- set *AABBCCDDEEFF* value for `Configuration > Variables > field1`. Edit the 000000000000.js script and replace the *ABCDEFABCDEF* MAC address value by your push button one's,
+ 
+## Qeedji App loading
+Connect to the device configuration Web interface. In the *Local deposit* item of the `Configuration > App` pane, load the `app.tar` so that the Qeedji device is playing the Social distancing App.
+   
 ## App customization
 
 **The App is already configured to work properly without error. Anyway it is possible to customize it according to your needs.** 
