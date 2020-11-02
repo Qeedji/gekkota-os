@@ -49,12 +49,12 @@ Connect to the device configuration Web interface&sup2:
 - press on the `Reboot the device` button.
 
 ### With a configuration script
-Else you can use a configuration by script with the `000000000000.js` script. It allows in one go to: 
+Else you can realize your configuration by using the `000000000000.js` script. It allows in one go to: 
 - set *Local deposit* for `Configuration > App`, 
 - set *deactivated* for `Configuration > Output > Soundcard > Mute`,
 - set *deactivated* for the `Maintenance > Testcard`, 
-- set `innes.adapters.serial.uart_1.syspath` user preference to */dev/ttyACM0*.
-- set *AABBCCDDEEFF* value for `Configuration > Variables > field1`. Edit the 000000000000.js script and replace the *ABCDEFABCDEF* MAC address value by your push button one's,
+- set `innes.adapters.serial.uart_1.syspath` user preference to */dev/ttyACM0*,
+- set *AABBCCDDEEFF* value for `Configuration > Variables > field1`. Edit the 000000000000.js script and replace the *ABCDEFABCDEF* MAC address value by your push button one's.
  
 ## Qeedji App loading
 Connect to the device configuration Web interface. In the *Local deposit* item of the `Configuration > App` pane, load the `app.tar` so that the Qeedji device is playing the Social distancing App.
