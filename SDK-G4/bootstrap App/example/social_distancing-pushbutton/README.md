@@ -2,7 +2,7 @@
 
 This App is an example to show a social distancing application with the WPAN push-button.  
 
-It allows to a people to limit the number of people in a room by displaying on a screen, located near the access door, to display different information messages thanks to an `EnOcean` WPAN push button :
+It allows to a person to limit, thanks to an `EnOcean` WPAN push button, the number of people standing in a room by displaying different information messages on a screen:
 - a message&sup1; with a green background on a screen when the user is pressing on the `Empty circle` key of the push-button.
 ```
 YOU CAN ENTER, 
@@ -13,7 +13,7 @@ Please respect social distancing measures
 PLEASE WAIT, 
 Please respect social distancing measures
 ```
-An .mp3 sound is played at each state transitions.
+An short alarm (.mp3) can be played for a short duration during the transitions.
 
 &sup1; *this message can be also displayed, only for a couple of time, by pressing on the `+` key of the push-button*. 
 
