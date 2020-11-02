@@ -25,7 +25,7 @@ An short alarm (.mp3) can be played for a short duration during the transitions.
 	- Gekkota OS 4.13.10 (or above)
 		- for device SMA300
 		- for device DMB400
-`USB to WPAN` adapter
+- `USB to WPAN` adapter
 	- With this App, an `USB to WPAN` adapter needs to be plugged on the device to work properly else an error is raised. 
 - `EnOcean` device 
 	- Example: `PTM 215B` push button. For further information, contact sales@qeedji.tech
