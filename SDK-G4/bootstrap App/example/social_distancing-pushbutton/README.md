@@ -43,7 +43,7 @@ Then connect to the device configuration Web interface:
 | SMA300  |`innes.adapters.serial.uart_1.syspath` | /dev/ttyUSB0  | /dev/ttyACM0  
 | DMB400  |`innes.adapters.serial.uart_1.syspath` | /dev/ttyAS1   | /dev/ttyACM0  
 
-- to deal only with only one specific push button, in the `Configuration > Variables` pane, , it is advised to enter the push button MAC address in the `field1` variable input.
+- to deal only with only one specific push button, in the `Configuration > Variables` pane, it is advised to enter the push button MAC address in the `field1` variable input with the pattern *AABBCCDDEEFF*.
 
 - then reboot the `Qeedji` device. 
 
@@ -124,7 +124,8 @@ The App has 2 medias directories:
         - `wait_main-<device_output_resolution>.jpg`,
         - `wait_secondary-<device_output_resolution>.jpg`.
     
-The `<device_output_resolution>` is the current `Qeedji` device resolution in the format `<width>x<height>`. For example, on the resolution of 1024x600, the main files must be named as follows:
+The `<device_output_resolution>` is the current `Qeedji` device resolution in the format `<width>x<height>`. 
+For example, for the resolution of 1024x600, the main files must be named as follows:
 - `enter_main-1024x600.jpg`
 - `wait_main-1024x600.jpg`
 
