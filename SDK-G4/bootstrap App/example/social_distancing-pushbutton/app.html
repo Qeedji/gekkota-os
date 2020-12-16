@@ -8,19 +8,19 @@
 	<meta content="2018-11-12T14:43:23.605Z" name="date-revision">
 	<meta content="sociale_distanciation-pushbutton" name="app-name">
 	<script>
-		//=============================================================================		
-		// configuration of the image behaviour for the enter state 
-		var imageEnterMainDuration = 10000; /* main image duration in ms */
-		var imageEnterSecondaryDuration = 5000; /* secondary image duration in ms */
-		var imageEnterSecondaryActive = true; /* true: secondary image activated */
-		
-		// configuration of the image behaviour for the wait state  
-		var imageWaitMainDuration = 10000; /* main image duration in ms */
-		var imageWaitSecondaryDuration = 5000; /* secondary image duration in ms */
-		var imageWaitSecondaryActive = true; /* true: secondary image activated */
+		//=============================================================================
+		// Adjust as required (All times are in milliseconds)
 
-		// configuration of the reenter timeout duration
-		var imageReEnterMainDuration = 5000; /* enter state timeout duration in ms */
+		// enter Image(s)
+		var imageEnterMainDuration = 5000;
+		var imageEnterSecondaryDuration = 5000;
+		var imageEnterSecondaryActive = true;
+		// wait Image(s)
+		var imageWaitMainDuration = 10000;
+		var imageWaitSecondaryDuration = 5000;
+		var imageWaitSecondaryActive = false;
+
+		var imageReEnterMainDuration = 5000;
 
 		// Other default parameters
 		var DEBUG = false;
@@ -28,11 +28,11 @@
 
 	</script>
 
-	<script src="js/wpanKeyListener.js"></script>
-	<script src="js/spin.min.js"></script>
+	<script type="text/javascript" src="libs/logger.js"></script>
+	<script type="text/javascript" src="js/wpanKeyListener.js"></script>
 	<style type="text/css">
 		html {
-			pointer-events: none;
+			/* pointer-events: none; */
 			-webkit-user-select: none;
 			-moz-user-select: none;
 			-ms-user-select: none;
@@ -61,27 +61,15 @@
 		img {
 			position: absolute;
 			left: 100%;
-		}
-
-		#konsole {
-			position: absolute;
-			display: none;
-			top: 5%;
-			left: 5%;
-			height: 90%;
-			width: 90%;
-			overflow: auto;
-			font-size: 1em;
-			font-family: "courier";
-			color: #00FF00;
-			background-color: rgba(0, 0, 0, 0.6);
+			width: 100%;
+			height: 100%;
 		}
 	</style>
 
 	<script>
 
-		//=============================================================================		
-		var konsole, main, alarmCall;
+		//=============================================================================
+		var main, alarmCall;
 		var state = -1;
 		var hasLED = false;
 		var appLeftLed, appRightLed;
@@ -97,16 +85,13 @@
 		var imageCount;
 		var imagePassOne = true;
 		var hasErrorState = false;
-
+		var logger = new Logger("app.sociale_distanciation-pushbutton");
+		logger._logger.setLogLevel(1);
 		function log(msg, level) {
-			if (DEBUG) {
-				var now = new Date();
-				if (level == 2) {
-					konsole.innerHTML += "<li><b>" + now.toLocaleTimeString() + " : " + msg + "</b></li>";
-				} else {
-					konsole.innerHTML += "<li>" + now.toLocaleTimeString() + " : " + msg + "</li>";
-				}
-
+			if (level === 2) {
+				logger.error(msg);
+			} else {
+				logger.debug(msg);
 			}
 		};
 
@@ -134,7 +119,7 @@
 				imageIdx++;
 			}
 
-			main.style.backgroundImage = "url('" + images[imageIdx].src + "')";
+			displayImage(imageIdx);
 
 			if (isSlideShow) {
 				switch (imageIdx) {
@@ -163,8 +148,15 @@
 				appRightLed.color = 0x000000;
 			}
 			clearTimeout(imageTimer);
-			main.style.backgroundImage = "url('" + images[4].src + "')";
+			displayImage(4);
 			state = 0;
+		}
+
+		function displayImage(imageIndex) {
+			for (var i = 0; i < images.length; i++) {
+				images[i].style.left = "100%";
+			}
+			images[imageIndex].style.left = "0";
 		}
 
 		function showStart() {
@@ -349,12 +341,7 @@
 		}
 
 		function load() {
-			if (DEBUG) {
-				konsole = document.getElementById("konsole");
-				konsole.style.display = "block";
-				konsole.innerHTML = "Viewport : " + window.innerWidth + " x " + window.innerHeight;
-			}
-
+			log("Viewport : " + window.innerWidth + " x " + window.innerHeight, 1);
 			main = document.getElementById("main");
 			main.style.backgroundColor = backgroundColor;
 			alarmCall = document.getElementById("alarmCall");
@@ -368,8 +355,7 @@
 			try {
 				_serialAdapterManager = new SerialAdapterManager(processEnOceanButton, showStart, showError, log);
 				_serialAdapterManager.startListenProcess();
-			}
-			catch (ex) {
+			} catch (ex) {
 				log("initComms Exception  " + ex, 2);
 				showError();
 			}
@@ -391,9 +377,7 @@
 
 <body onload="load()" onunload="unload()">
 	<div id="main"></div>
-	<audio id="alarmCall">
-	</audio>
-	<div id="konsole"></div>
+	<audio id="alarmCall"></audio>
 </body>
 
 </html>
