@@ -1,6 +1,9 @@
 Gekkota API
 ==================================
 
+**avInput:**
+Explains how to use audio/video inputs.
+
 **avmedia.decodingGroup:**
 Explains how to use the video decoding group, a CSS property allowing to share decoding instances between several HTML video elements.
 
