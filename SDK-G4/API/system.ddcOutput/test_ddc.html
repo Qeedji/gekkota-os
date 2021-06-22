@@ -1,0 +1,665 @@
+<!doctype html>
+<html>
+
+	<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+
+		<style type="text/css">
+			*{
+				background-color: white;
+			}
+			table#TableGeneral {
+				background-color: #f1f1c1;
+			}
+			table#TableEdid {
+				background-color: #f1f1c1;
+			}
+			table#TableDdcci {
+				background-color: #f1f1c1;
+			}
+			td {
+				vertical-align: top;
+			}
+			input {
+				background-color: #f1f1c1;
+			}
+		</style>
+		<title>DDC</title>
+		<script type="text/javascript;version=1.8">
+			"use strict";
+			
+			var system;
+			var ddcList;
+			const Ci=Components.interfaces;
+			var ddcNb;
+			var ddc;
+			var gLogger = log4Service.getLogger("test.ddc");
+            LOG("TEST");
+								
+			function LOG(msg)
+			{
+//				console.error(msg);
+				gLogger.debug (msg, null);
+				appendConsole(msg);
+			}
+			
+			function init()
+			{
+				LOG("init");
+				try
+				{
+					LOG("Starting...\n");
+					getDdcFunctions();
+				}
+				catch (ex)
+				{
+					LOG("Exception : " + ex + "\n");
+					LOG("Exception : " + ex); 
+				}
+			}
+
+			function observe()
+			{
+				try
+				{
+					appendConsole("Adding observer...\n");
+					AddObserver();
+				}
+				catch (ex)
+				{
+					appendConsole("Exception : " + ex + "\n");
+					LOG("Exception : " + ex); 
+				}
+			}
+
+			function test0()
+			{
+				try
+				{
+					GetMonitorConnected();
+				}
+				catch (ex)
+				{
+					appendConsole("Exception : " + ex + "\n");
+					LOG("Exception : " + ex); 
+				}
+			}			
+			
+			function test1()
+			{
+				try
+				{
+					GetVCP(0x10);
+				}
+				catch (ex)
+				{
+					appendConsole("Exception : " + ex + "\n");
+					LOG("Exception : " + ex); 
+				}
+			}
+			
+			function test2()
+			{
+				try
+				{
+					GetVCP(0x60);
+				}
+				catch (ex)
+				{
+					appendConsole("Exception : " + ex + "\n");
+					LOG("Exception : " + ex); 
+				}
+			}
+
+			function test3()
+			{
+				try
+				{
+					GetVCP(0xD6);
+				}
+				catch (ex)
+				{
+					appendConsole("Exception : " + ex + "\n");
+					LOG("Exception : " + ex); 
+				}
+			}
+
+			function test4()
+			{
+				try
+				{
+					SetVCP(0x10, 50);
+				}
+				catch (ex)
+				{
+					appendConsole("Exception : " + ex + "\n");
+					LOG("Exception : " + ex); 
+				}
+			}
+
+			function test5()
+			{
+				try
+				{
+					SetVCP(0x10, 15);
+				}
+				catch (ex)
+				{
+					appendConsole("Exception : " + ex + "\n");
+					LOG("Exception : " + ex); 
+				}
+			}
+
+			function test6()
+			{
+				try
+				{
+					SetVCP(0x60, 12);
+				}
+				catch (ex)
+				{
+					appendConsole("Exception : " + ex + "\n");
+					LOG("Exception : " + ex); 
+				}
+			}
+			
+			function appendConsole(str)
+			{
+				 var area = document.getElementById("console")
+				 if (area)
+					 area.value += str;
+			}
+			
+			function load()
+			{
+				setTimeout(init, 1000);
+				// following lines are needed if mouse is not supported
+				setTimeout(observe, 2000);
+				setTimeout(test0, 3000);
+/*				setTimeout(test1, 5000);
+				setTimeout(test2, 10000);
+				setTimeout(test3, 15000);
+				setTimeout(test4, 25000);
+				setTimeout(test5, 30000);
+				setTimeout(test6, 40000);*/
+			}
+			
+			function getDdcFunctions()
+			{
+				try
+				{
+					system= window.systemManager;
+					ddcList=system.getAdaptersByIId(Ci.nsISystemAdapterDdcOutput);
+					LOG("ddcList.length = " + ddcList.length + "\n");
+					ddcNb = ddcList.length;
+					document.getElementById("DdcNumber").value = ddcNb;
+					
+					for (var i = 0; i < ddcNb; i++)
+					{
+						ddc = ddcList.queryElementAt(i,Ci.nsISystemAdapterDdcOutput);
+						LOG("ddc.sysPath = " + ddc.sysPath + "\n");
+						document.getElementById("Syspath").value = ddc.sysPath;
+						var connectorsList = ddc.connectors;
+						var connector = connectorsList.queryElementAt(0, Ci.nsISystemConnector);
+						appendConsole("ddc.connectorId = " + connector.id + "\n");
+						document.getElementById("ConnectorId").value = connector.id;
+						appendConsole("ddc.connectorLabel = " + connector.label + "\n");
+						document.getElementById("ConnectorLabel").value = connector.label;
+					}
+
+					ddc = ddcList.queryElementAt(0,Ci.nsISystemAdapterDdcOutput);
+				
+					document.getElementById("MonitorStatus").value = "Unknown";
+					document.getElementById("ObserverStatus").value = "Unknown";
+
+					RefreshDdcSupport();
+				}
+				catch (ex)
+				{
+					LOG("Exception : " + ex + "\n");
+					document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+					
+					LOG("Exception : " + ex); 
+				}
+			}
+
+			function GetMonitorConnected()
+			{
+				try
+				{
+					let state = ddc.isMonitorConnected;
+					
+					if (state == 1)
+					{
+						document.getElementById("MonitorStatus").value = "Connected";
+						LOG("  Connected\n");
+					}
+					else
+					{
+						document.getElementById("MonitorStatus").value = "Disconnected";
+						LOG("  Disconnected\n");
+					}
+					document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+					
+					LOG("Get Monitor Status\n");
+					document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+				}
+				catch (ex)
+				{
+					LOG("Exception : " + ex + "\n");
+					document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+					LOG("Exception : " + ex); 
+				}
+			}
+
+			function GetVCP(VcpCode)
+			{
+				try
+				{
+					ddc.getVcpCode(VcpCode, function (event)
+					{
+						LOG("getVcpCode status = " + event.status + "\n");
+						let status = event.status;
+						let value = event.value;
+						let max = event.maximumValue;
+						if (status == 0)
+						{
+							LOG("  Value = " + value + "\n");
+							LOG("  Max = " + max + "\n");
+						}
+						else
+						{
+							LOG("  Unavailable\n");
+						}
+						document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+					});
+					LOG("VCP Code = 0x" + VcpCode.toString(16) + "\n");
+					document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+				}
+				catch (ex)
+				{
+					LOG("Exception : " + ex + "\n");
+					document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+					LOG("Exception : " + ex); 
+				}
+			}
+			
+			function SetVCP(VcpCode, VcpValue)
+			{
+				try
+				{
+					ddc.setVcpCode(VcpCode, VcpValue, function (event)
+					{
+						let status = event.status;
+						if (status == 0)
+						{
+							LOG("  Success\n");
+						}
+						else
+						{
+							LOG("  Failure\n");
+						}
+						document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+					});
+					LOG("VCP Code = 0x" + VcpCode.toString(16) + " value=" + VcpValue + "\n");
+					document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+				}
+				catch (ex)
+				{
+					LOG("Exception : " + ex + "\n");
+					document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+					LOG("Exception : " + ex); 
+				}
+			}
+			
+			function myObserver(event)
+			{
+				try
+				{
+					let aMonitorConnected = event.isConnected;
+					LOG("Observer event detection : " + aMonitorConnected + "\n");
+					if (aMonitorConnected == true)
+					{
+						document.getElementById("MonitorStatus").value = "Connected";
+						LOG("Monitor connected\n");
+						document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+					}
+					else
+					{
+						document.getElementById("MonitorStatus").value = "Disconnected";
+						LOG("Monitor disconnected\n");
+						document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+					}
+				}
+				catch (ex)
+				{
+					document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+					LOG("Exception : " + ex); 
+				}
+			}
+			
+			function AddObserver()
+			{
+				try
+				{
+					ddc.addObserver(myObserver);
+					LOG("Observer added\n");
+					document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+					document.getElementById("ObserverStatus").value = "Enabled";
+				}
+				catch (ex)
+				{
+					LOG("Exception : " + ex + "\n");
+					document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+					LOG("Exception : " + ex); 
+				}
+			}
+			
+			function RemoveObserver()
+			{
+				try
+				{
+					ddc.removeObserver(myObserver);
+					LOG("Observer removed\n");
+					document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+					document.getElementById("ObserverStatus").value = "Disabled";
+				}
+				catch (ex)
+				{
+					LOG("Exception : " + ex + "\n");
+					document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+					LOG("Exception : " + ex); 
+				}
+			}
+			
+			function powerModeOff()
+			{
+				try
+				{
+					SetVCP(0xD6, 4);
+					setTimeout("SetVCP(0xD6, 4)", 2000);
+				}
+				catch (ex)
+				{
+					LOG("Exception : " + ex + "\n");
+					document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+				}
+			}
+
+			function toHex(value)
+			{
+				var data = [];
+				var len = value.length;
+				for (var i = 0; i < len; ++i)
+				{
+					var char = value.charCodeAt(i);
+					var hex = char.toString(16).toUpperCase();
+					if(hex.length == 1)
+					{
+						hex = "0" + hex;
+					}
+					data.push(hex);
+				}
+				return data.join(" ");
+			}
+			
+			function RefreshDdcSupport()
+			{
+				try
+				{
+					if (ddc.monitorEdid != null)
+					{
+						document.getElementById("EdidSupport").value = "Yes";
+						
+						var MonitorEdid = ddc.monitorEdid;
+						
+						var Edid00Text = toHex(MonitorEdid.rawEedid00);
+						LOG("Base E-EDID = " + Edid00Text + "\n");
+						document.getElementById("IdEedid00").value = Edid00Text;
+						
+						var Edid02Text = toHex(MonitorEdid.rawEedid02);
+						LOG("E-EDID CEA = " + Edid02Text + "\n");
+						document.getElementById("IdEedid02").value = Edid02Text;
+						
+						var Edid10Text = toHex(MonitorEdid.rawEedid10);
+						LOG("E-EDID VTB = " + Edid10Text + "\n");
+						document.getElementById("IdEedid10").value = Edid10Text;
+
+						var Edid40Text = toHex(MonitorEdid.rawEedid40);
+						LOG("E-EDID DI = " + Edid40Text + "\n");
+						document.getElementById("IdEedid40").value = Edid40Text;
+
+						var Edid50Text = toHex(MonitorEdid.rawEedid50);
+						LOG("E-EDID LS = " + Edid50Text + "\n");
+						document.getElementById("IdEedid50").value = Edid50Text;
+
+						var Edid60Text = toHex(MonitorEdid.rawEedid60);
+						LOG("E-EDID DPVL = " + Edid60Text + "\n");
+						document.getElementById("IdEedid60").value = Edid60Text;
+					}
+					else
+					{
+						document.getElementById("EdidSupport").value = "No";
+						document.getElementById("IdEedid00").value = "N/A";
+						document.getElementById("IdEedid02").value = "N/A";
+						document.getElementById("IdEedid10").value = "N/A";
+						document.getElementById("IdEedid40").value = "N/A";
+						document.getElementById("IdEedid50").value = "N/A";
+						document.getElementById("IdEedid60").value = "N/A";
+					}
+					
+					if (ddc.monitorDdcci != null)
+					{
+						document.getElementById("DdcciSupport").value = "Yes";
+						
+						var MonitorDdcci = ddc.monitorDdcci;
+
+						var MccsCapabilitiesVar = MonitorDdcci.rawMccsCapabilities;
+						LOG("MCCS Capabilities = " + MccsCapabilitiesVar + "\n");
+
+						var ProtocolClassVar = MonitorDdcci.protocolClass;
+						LOG("Protocol Class = " + ProtocolClassVar + "\n");
+						document.getElementById("ProtocolClass").value = ProtocolClassVar;
+					
+						var DisplayTypeVar = MonitorDdcci.displayType;
+						LOG("Display Type = " + DisplayTypeVar + "\n");
+						document.getElementById("DisplayType").value = DisplayTypeVar;
+
+						var DisplayModelVar = MonitorDdcci.displayModel;
+						LOG("Display Model = " + DisplayModelVar + "\n");
+						document.getElementById("DisplayModel").value = DisplayModelVar;
+
+						var MccsVersionVar = MonitorDdcci.mccsVersion;
+						LOG("Mccs Version = " + MccsVersionVar + "\n");
+						document.getElementById("MccsVersion").value = MccsVersionVar;
+
+						var LuminanceValuesVar = MonitorDdcci.luminanceValues;
+						LOG("Luminance Values = " + LuminanceValuesVar + "\n");
+						document.getElementById("LuminanceValues").value = LuminanceValuesVar;
+						
+						var BacklightValuesVar = MonitorDdcci.backlightValues;
+						LOG("Backlight Values = " + BacklightValuesVar + "\n");
+						document.getElementById("BacklightValues").value = BacklightValuesVar;
+
+						var PowerModeValuesVar = MonitorDdcci.powerModeValues;
+						LOG("Power Mode Values = " + PowerModeValuesVar + "\n");
+						document.getElementById("PowerModeValues").value = PowerModeValuesVar;
+						
+						var InputSourceValuesVar = MonitorDdcci.inputSourceValues;
+						LOG("Input Source Values = " + InputSourceValuesVar + "\n");
+						document.getElementById("InputSourceValues").value = InputSourceValuesVar;
+
+						var AudioSpeakerVolumeValuesVar = MonitorDdcci.audioSpeakerVolumeValues;
+						LOG("Audio Speaker Volume Values = " + AudioSpeakerVolumeValuesVar + "\n");
+						document.getElementById("AudioSpeakerVolumeValues").value = AudioSpeakerVolumeValuesVar;
+
+						var AudioMuteValuesVar = MonitorDdcci.audioMuteValues;
+						LOG("Audio Mute Values = " + AudioMuteValuesVar + "\n");
+						document.getElementById("AudioMuteValues").value = AudioMuteValuesVar;
+					}
+					else
+					{
+						document.getElementById("DdcciSupport").value = "No";
+						document.getElementById("ProtocolClass").value = "N/A";
+						document.getElementById("DisplayType").value = "N/A";
+						document.getElementById("DisplayModel").value = "N/A";
+						document.getElementById("MccsVersion").value = "N/A";
+						document.getElementById("LuminanceValues").value = "N/A";
+						document.getElementById("BacklightValues").value = "N/A";
+						document.getElementById("PowerModeValues").value = "N/A";
+						document.getElementById("InputSourceValues").value = "N/A";
+						document.getElementById("AudioSpeakerVolumeValues").value = "N/A";
+						document.getElementById("AudioMuteValues").value = "N/A";
+					}
+					
+					document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+				}
+				catch (ex)
+				{
+					LOG("Exception : " + ex + "\n");
+					document.getElementById("console").scrollTop = document.getElementById("console").scrollHeight;
+					LOG("Exception : " + ex); 
+				}
+			}
+		</script>
+		<body onload="load()">
+			<table border="0">
+				<tr>
+					<td><textarea id="console" cols="80" rows="15"></textarea></td>
+				</tr>
+			</table>
+			<table id="TableAdapter" border="0">
+				<tr>
+					<td>
+						<table id="TableGeneral" border="1" >
+							<caption> DDC Adapter </caption>
+							<tr>
+								<th>DDC Number</th>
+								<td><input id="DdcNumber" type="number"/></td>
+							</tr>
+							<tr>
+								<th>Syspath</th>
+								<td><input id="Syspath" type="text"/></td>
+							</tr>
+							<tr>
+								<th>ConnectorId</th>
+								<td><input id="ConnectorId" type="text"/></td>
+							</tr>
+							<tr>
+								<th>ConnectorLabel</th>
+								<td><input id="ConnectorLabel" type="text"/></td>
+							</tr>
+							<tr>
+								<th>Monitor Status</th>
+								<td><input id="MonitorStatus" type="text"/></td>
+							</tr>
+							<tr>
+								<th>Observer Status</th>
+								<td><input id="ObserverStatus" type="text"/></td>
+							</tr>
+						</table>
+					</td>
+					<td>
+						<table id="TableEdid" border="1" >
+							<caption> EDID </caption>
+							<tr>
+								<th>EDID Support</th>
+								<td><input id="EdidSupport" type="text"/></td>
+							</tr>
+							<tr>
+								<th>Base</th>
+								<td><input id="IdEedid00" type="text"/></td>
+							</tr>
+							<tr>
+								<th>CEA-EXT</th>
+								<td><input id="IdEedid02" type="text"/></td>
+							</tr>
+							<tr>
+								<th>VTB-EXT</th>
+								<td><input id="IdEedid10" type="text"/></td>
+							</tr>
+							<tr>
+								<th>DI-EXT</th>
+								<td><input id="IdEedid40" type="text"/></td>
+							</tr>
+							<tr>
+								<th>LS-EXT</th>
+								<td><input id="IdEedid50" type="text"/></td>
+							</tr>
+							<tr>
+								<th>DPVL-EXT</th>
+								<td><input id="IdEedid60" type="text"/></td>
+							</tr>
+						</table>
+					</td>
+					<td>
+						<table id="TableDdcci" border="1" >
+							<caption> DDC-CI </caption>
+							<tr>
+								<th>DDC-CI Support</th>
+								<td><input id="DdcciSupport" type="text"/></td>
+							</tr>
+							<tr>
+								<th>Protocol Class</th>
+								<td><input id="ProtocolClass" type="text"/></td>
+							</tr>
+							<tr>
+								<th>Display Type</th>
+								<td><input id="DisplayType" type="text"/></td>
+							</tr>
+							<tr>
+								<th>Display Model</th>
+								<td><input id="DisplayModel" type="text"/></td>
+							</tr>
+							<tr>
+								<th>MCCS Version</th>
+								<td><input id="MccsVersion" type="text"/></td>
+							</tr>
+							<tr>
+								<th>Luminance</th>
+								<td><input id="LuminanceValues" type="text"/></td>
+							</tr>
+							<tr>
+								<th>Backlight</th>
+								<td><input id="BacklightValues" type="text"/></td>
+							</tr>
+							<tr>
+								<th>Power Mode</th>
+								<td><input id="PowerModeValues" type="text"/></td>
+							</tr>
+							<tr>
+								<th>Input Source</th>
+								<td><input id="InputSourceValues" type="text"/></td>
+							</tr>
+							<tr>
+								<th>Audio Speaker Volume</th>
+								<td><input id="AudioSpeakerVolumeValues" type="text"/></td>
+							</tr>
+							<tr>
+								<th>Audio Mute</th>
+								<td><input id="AudioMuteValues" type="text"/></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+			<input id="GetMonitorConnected" type="button" value="Get Monitor Status"
+			onclick="GetMonitorConnected()"/>
+			<input id="GetLuminance" type="button" value="Read Luminance"
+			onclick="GetVCP(0x10)"/>
+			<input id="GetPowerMode" type="button" value="Read Power Mode"
+			onclick="GetVCP(0xD6)"/>
+			<input id="GetInputSource" type="button" value="Read Input Source"
+			onclick="GetVCP(0x60)"/>
+			<input id="SetInputSource" type="button" value="Change Input Source"
+			onclick="SetVCP(0x60, 1)"/>
+			<input id="SetPowerMode" type="button" value="Power off monitor"
+			onclick="powerModeOff()"/>
+			<input id="AddObserver" type="button" value="Add Observer"
+			onclick="AddObserver()"/>
+			<input id="RemoveObserver" type="button" value="Remove Observer"
+			onclick="RemoveObserver()"/>
+			<input id="RefreshDdcSupport" type="button" value="Refresh DDC support"
+			onclick="RefreshDdcSupport()"/>
+		</body>
+</html>
