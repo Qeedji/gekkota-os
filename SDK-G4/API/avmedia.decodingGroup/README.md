@@ -1,6 +1,6 @@
 #  Video decoding group
 
-The video decoding group is a CSS property allowing to share decoding instances between several HTML video elements.
+The video decoding group is a CSS property allowing to share decoding instances between several HTMLVideoElements.
 Every element with the same property value is sharing **one** decoding instance.
 
 **Requirement**: the preference "innes.video.decoding-group.enabled" must be enabled or the CSS property will not be considered.
@@ -12,19 +12,28 @@ Every element with the same property value is sharing **one** decoding instance.
 Use it like any other CSS property:
 
 ````css
-#html_element_1 {
+#video_container {
     position: absolute;
     left: 0px;
     width: 100%;
     -gkt-video-decoding-group:"decoding_group_name";
 }
-
-#html_element_2 {
-    position: relative;
-    left: 20px;
-    height: 100%;
-    -gkt-video-decoding-group:"decoding_group_name";
-}
 ````
 
-In this example, if "decoding_group_name" is the same in "html_element_1" and "html_element_2", both elements are sharing one decoding instance. An HTML element with no -gkt-video-decoding-group specified or with only itself in the decoding group will have the same behavior as a default HTML video element.
+In this example, all HTMLVideoElements in "video_container" are sharing one decoding instance.
+
+````js
+video_sequence = document.getElementById("video_container");
+
+video_1 = document.createElement('video');
+video_sequence.appendChild(video_1);
+video_1.src = "file_1.mp4";                 // video_1 takes the decoding instance
+video_1.play();                             // first frame of video_1 is displayed
+
+video_2 = document.createElement('video');
+video_sequence.appendChild(video_2);
+video_2.src = "file_2.mp4";                 // video_2 takes the decoding instance. video_1 stops playing and still displays its last decoded frame
+video_2.play();                             // first frame of video_2 is displayed
+
+video_sequence.removeChild(video_1);        // other resources used by video_1 will be released asynchronously
+````

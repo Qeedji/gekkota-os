@@ -55,11 +55,17 @@ This API allows to write and read from GPIO.
 On a SMT equipment, we can know when a tag enters or leaves the NFC field.
 The NFC System Adapter API provides some interfaces and callbacks to detect and get information (eg. Identifier) about the NFC tag.
 
+**system.reboot:**
+This API allows to reboot the device
+
 **system.serial:**
 The Serial API allows to read and write on a serial interface. Reads can be synchronous or asynchronous with a listener.
 
 **system.sideLeds:**
 This API allows to manage the LEDs color on a SMT equipment.
+
+**system.sound:**
+This API allows to set audio outputs volume and mute
 
 **websql:**
 The Web SQL API allows to connect to an ODBC database and send synchronous and asynchronous queries.

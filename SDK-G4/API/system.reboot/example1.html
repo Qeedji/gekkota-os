@@ -1,0 +1,63 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>System reboot example</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script type="text/javascript">
+		(function () {
+			/************************************************************************/
+			/*************** Here is the Test Suite you should modify ***************/
+			/************************************************************************/
+			window.onload = function () {
+				var testRunner = new window.RebootTestRunner("example.system.reboot");
+				testRunner.doReboot();
+			};
+		})();
+		/************************************************************************/
+		/*************** From here don't need to modify anything ****************/
+		/************************************************************************/
+
+		(function () {
+			function RebootTestRunner(name) {
+				try {
+					this._logger = new window.Logger(name);
+					this._logger.log("RebootTestRunner");
+				} catch (e) {
+					this._logger.errorEx(e);
+				}
+			}
+			RebootTestRunner.prototype = {
+				_reboot: function () {
+					systemMaintenance.reboot();
+				},
+
+				doReboot: function () {
+					try {
+						if ("systemMaintenance" in window) {
+							this._logger.log("Reboot in 60s");
+							window.setTimeout(this._reboot(), 60000);
+						} else {
+							this._logger.log("No systemMaintenance in window");
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+			};
+
+			window.RebootTestRunner = RebootTestRunner;
+		})();
+
+	</script>
+</head>
+
+<body>
+	<h1>System reboot example</h1>
+	<div class="container"></div>
+	<textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+
+</html>

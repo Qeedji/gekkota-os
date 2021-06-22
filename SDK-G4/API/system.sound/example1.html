@@ -1,0 +1,82 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>System sound example</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script type="text/javascript">
+		(function () {
+			/************************************************************************/
+			/*************** Here is the Test Suite you should modify ***************/
+			/************************************************************************/
+			window.onload = function () {
+				var testRunner = new window.SoundTestRunner("example.system.sound");
+				testRunner.setVolume(50);		/** Audio volume to 50%. */
+				//testRunner.mute();
+			};
+		})();
+		/************************************************************************/
+		/*************** From here don't need to modify anything ****************/
+		/************************************************************************/
+
+		(function () {
+			function SoundTestRunner(name) {
+				try {
+					this._logger = new window.Logger(name);
+					this._logger.log("SoundTestRunner");
+				} catch (e) {
+					this._logger.errorEx(e);
+				}
+			}
+			SoundTestRunner.prototype = {
+				setVolume: function (value) {
+					try {	
+						const Ci = window.Components.interfaces;
+						var soundOutput = Ci.nsISystemAdapterSoundOutput;
+						var soundAdapters = window.systemManager.getAdaptersByIId(soundOutput);
+						if(soundAdapters) {
+							var length = soundAdapters.length;
+							for(var i = 0; i < length; ++i){
+								var adapter = soundAdapters.queryElementAt(i, soundOutput);
+								adapter.volume = value;
+								this._logger.log("Volume set to " + value + "% on adapter " + i);
+								}
+							}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				mute: function () {
+					try {	
+						const Ci = window.Components.interfaces;
+						var soundOutput = Ci.nsISystemAdapterSoundOutput;
+						var soundAdapters = window.systemManager.getAdaptersByIId(soundOutput);
+						if(soundAdapters) {
+							var length = soundAdapters.length;
+							for(var i = 0; i < length; ++i){
+								var adapter = soundAdapters.queryElementAt(i, soundOutput);
+								adapter.mute = true;
+								this._logger.log("Mute adapter " + i);
+								}
+							}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},				
+			};
+
+			window.SoundTestRunner = SoundTestRunner;
+		})();
+
+	</script>
+</head>
+
+<body>
+	<h1>System sound example</h1>
+	<div class="container"></div>
+	<textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+
+</html>
