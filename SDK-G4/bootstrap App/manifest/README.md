@@ -3,7 +3,8 @@
 ## Introduction to Manifest file
 
 This document describes the content of the Manifest file of Gekkota bootstrap App.
-The format of the Manifest file is RDF XML.
+The format of the Manifest file is RDF or XML.
+The full specification in XML format can be consulted [here.](SPEC-MANIFEST-001.md)
 When the file is retrieved in the "Pull" mode by Gekkota using a webdav server, its naming is as following :
 *manifest.[ID].xml*, where *[ID]* is the unique identifier of the device .
 
@@ -13,15 +14,9 @@ This file allows to :
 * Define the point of entry to launch the App of startup (launcher),
 * Enumerate all the files required to run the application (cache).
 
-````mermaid
-graph TD
-    B[manifest file]
-    B-->C(metadata)
-    B-->D(launcher);
-    B-->E(cache);
-````
+![Alt text](graph.png?raw=true)
 
-## Example
+## Example in RDF format
 
 ````xml
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:pzpm="ns.innes.gekkota.manifest" xmlns:cms="ns.innes.example">
@@ -43,11 +38,10 @@ graph TD
   <!--List of resources-->
   <Description about=" ns.innes.gekkota.manifest#cache">
     <Bag>
-      <li>.medias/videos/1280-720-25-p-high-3.1-90-innes_counter.mp4</li>
-      <li src="http://monServeur/fichier.jpg" username="username" password="password" refresh="120">.medias/remote.jpg</li>
+      <li>.medias/videos/1280-720-25-p-high-3.1-90_counter.mp4</li>
+      <li src="http://myServer/file.jpg" username="username" password="password" refresh="120">.medias/remote.jpg</li>
       <li src="urn:innes:storage:removable/videos/">.domain-repository/videos/</li>
-      <li src="urn:innes:storage:local">.domain-repository/audios/</li>
-      <li src="urn:innes:storage:removable:/subtitles/fichier.srt">.domain-repository/subtitles/fichier.srt</li>
+      <li src="urn:innes:storage:removable:/subtitles/file.srt">.domain-repository/subtitles/file.srt</li>
       <li>player.html</li>
       <li>variables.xml</li>
     </Bag>
@@ -100,8 +94,21 @@ The *@username* and *@password* attributes are optional and defined for authenti
 This section is defined by a <*Description*> RDF element which attribute "@about" is always set to "ns.innes.gekkota.manifest#cache".
 For retrocompatibility, *"ns.innes.playzilla.manifest#cache"* and *"urn:innes:manifest:cache"* are authorized.
 This element is a RDF Bag and contains the list of all the resources required to run  the App of startup.
-This element is required.
 Every URIs in the Bag must be relative to the Manifest file.
+This element is required.
+The following attribute can be defined :
+
+#### Attribute *@downloader-state*
+
+Use to indicate the initial state of the downloader when the startup App is launched. Following values are accepted :
+
+##### Value `running`
+
+The downloader starts at the same time as the startup App and try to refresh the resources. This is the default value and behaviour when the *@downloader-state* attribute is not specified.
+
+##### Value `paused`
+
+The downloader does nothing until the startup App resumes it. So the startup App decides when refreshing occurs.
 
 ### Element <*Bag*>
 
@@ -109,7 +116,15 @@ This element contains a list of RDF <*li*> elements.
 
 #### Attribute *@refresh*
 
-The presence of the *@refresh* attribute implies that the resource will be repeatedly downloaded through webdav protocol with a time interval matching the value bound to the attribute in seconds.
+The presence of the *@refresh* attribute implies that the resource will be repeatedly downloaded through webdav protocol with a time interval matching the value bound to the attribute in seconds. 2 special values are also accepted :
+
+##### Value `manifest`
+
+The resource is refreshed at the same time as the manifest. This is the default value and behaviour when the *@refresh* attribute is not specified.
+
+##### Value `none`
+
+The resource is never refreshed. For example, use this value for resources that the startup App creates locally and wants to conserve. 
 
 #### Attribute *@keep-only*
 
