@@ -48,15 +48,15 @@ This API provides communication with the CEC bus through the CEC adapter.
 **system.generalSettings:**
 This API allows to retrieve general settings for your platform such as the MAC address, the version etc.
 
+**system.maintenance:**
+This API allows to carry out maintenance operations on the device
+
 **system.gpio:**
 This API allows to write and read from GPIO.
 
 **system.nfc:**
 On a SMT equipment, we can know when a tag enters or leaves the NFC field.
 The NFC System Adapter API provides some interfaces and callbacks to detect and get information (eg. Identifier) about the NFC tag.
-
-**system.reboot:**
-This API allows to reboot the device
 
 **system.serial:**
 The Serial API allows to read and write on a serial interface. Reads can be synchronous or asynchronous with a listener.
