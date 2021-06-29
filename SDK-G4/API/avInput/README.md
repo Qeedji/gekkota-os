@@ -29,3 +29,4 @@ Test code:
 </body>
 </html>
 ````
+Remark: when the audio/video signal is lost, the HTMLMediaElement sends a MediaError. Setting again the src attribute is not sufissant to restart it. It must be destroyed or removed from the DOM and a new HTMLMediaElement with src="urn:innes:av-input" must be created to capture the the audio/video signal again.
