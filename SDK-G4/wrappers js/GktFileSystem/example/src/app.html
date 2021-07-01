@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta
+      http-equiv="X-UA-Compatible"
+      content="IE=edge"
+    >
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    >
+    <title>Document</title>
+    <style type="text/css">
+      body {
+        font-size: 0.5cm;
+        background-color: white;
+        color: black;
+      }
+    </style>
+
+<script src="gkt-filesystem-1.2.0.min.js" type="text/javascript"></script>
+</head>
+
+  <body>
+    <script type="text/javascript">
+      function log(t) {
+        const d = document.createElement("div");
+        d.appendChild(document.createTextNode(t));
+        document.body.appendChild(d);
+      }
+      document.write("<br>");
+      try {
+		const playout = GktFileSystem.root().newDirectory(".playout/");
+		// End slash is important here
+		const archive = playout.newDirectory("Aeroplane.zip/");
+		archive.copy(playout, "content", { overwrite: false }).execute().then(
+		() => {
+			log("Unzip OK");
+			// Content of Aeroplane.zip is copied here: .playout/content/
+		},
+		(e) => {
+			log("copy error " + e);
+		}
+		);
+      } catch (e) {
+        document.write("GktFileSystem error " + e);
+      }
+    </script>
+  </body>
+
+</html>
