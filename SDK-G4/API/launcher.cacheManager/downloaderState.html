@@ -1,0 +1,69 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Changing downloaderState of cache manager</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script type="text/javascript">
+		(function () {
+			/************************************************************************/
+			/*************** Here is the Test Suite you should modify ***************/
+			/************************************************************************/
+			window.onload = function () {
+				var testRunner = new window.ChangeDownloaderStateRunner("example.launcher.cache-manager.downloader-state");
+				testRunner.doChangeDownloaderState();
+			};
+		})();
+		/************************************************************************/
+		/*************** From here don't need to modify anything ****************/
+		/************************************************************************/
+
+		(function () {
+			function ChangeDownloaderStateRunner(name) {
+				try {
+					this._logger = new window.Logger(name);
+					this._logger.log("ChangeDownloaderStateRunner");
+				} catch (e) {
+					this._logger.errorEx(e);
+				}
+			}
+			ChangeDownloaderStateRunner.prototype = {
+				doChangeDownloaderState: function () {
+					try {
+						if ("cacheManager" in window) {
+							const duration = 60
+							const Ci = Components.interfaces;
+							this._logger.log("Pause downloader in " + duration + "s");
+							window.setTimeout(() => {
+								this._logger.log("Pause downloader");
+								cacheManager.downloaderState = Ci.nsICacheManager.PAUSED;
+								this._logger.log("Running downloader in " + duration + "s");
+								window.setTimeout(() => { 
+									cacheManager.downloaderState =  Ci.nsICacheManager.RUNNING;
+									this._logger.log("Running downloader");
+								}, duration*1000);
+							}, duration * 1000);
+						} else {
+							this._logger.log("No cacheManager in window");
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+			};
+
+			window.ChangeDownloaderStateRunner = ChangeDownloaderStateRunner;
+		})();
+
+	</script>
+</head>
+
+<body style="background-color: white;">
+	<h1>Change downloader state of cache manager example</h1>
+	<div class="container"></div>
+	<textarea style="width:100%;height: 100%"type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+
+</html>

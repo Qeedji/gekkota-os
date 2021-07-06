@@ -16,19 +16,19 @@ This document explains how to filter HID events from specific devices and compon
 **io:**
 The IOManager API provides read/write access to certain locations of the filesystem
 
-**launcher.CacheManager:**
+**launcher.cacheManager:**
 The cache manager is responsible for managing the content of an app and its various modes of publication.
 
-**launcher.PlayLog:**
+**launcher.playLog:**
 The Playlog service allow to send event logging to a WebDav server.
 
-**launcher.MANIFEST:**
+**launcher.manifest:**
 This document describes the manifest format of Gekkota.
 
-**launcher.MANIFEST-XML:**
+**launcher.manifestXml:**
 This document describes the XML manifest format of Gekkota.
 
-**launcher.PowerManager:**
+**launcher.powerManager:**
 The Power manager service allow to change the power level manually or through a calendar.
 
 **ldap:**
