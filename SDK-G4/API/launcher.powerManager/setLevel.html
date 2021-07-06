@@ -1,0 +1,65 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Change the power manager level</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script type="text/javascript">
+		(function () {
+			/************************************************************************/
+			/*************** Here is the Test Suite you should modify ***************/
+			/************************************************************************/
+			window.onload = function () {
+				var testRunner = new window.SetLevelRunner("example.launcher.power-manager.set-level");
+				testRunner.doSetLevel();
+			};
+		})();
+		/************************************************************************/
+		/*************** From here don't need to modify anything ****************/
+		/************************************************************************/
+
+		(function () {
+			function SetLevelRunner(name) {
+				try {
+					this._logger = new window.Logger(name);
+					this._logger.log("SetLevelRunner");
+				} catch (e) {
+					this._logger.errorEx(e);
+				}
+			}
+			SetLevelRunner.prototype = {
+				doSetLevel: function () {
+					try {
+						if ("powerManagerService" in window) {
+							// get current level
+							let level = powerManagerService.level;
+							let manager = new PowerManager()
+ 							const Ci = Components.interfaces;
+ 							// Replace the current power level
+							 setTimeout(() => { manager.set(Ci.nsIPowerManager.LEVEL_MIN)}, 5000)
+							 // Restoring the initial level 
+							 setTimeout(() => { manager.set(level)}, 10000)
+						} else {
+							this._logger.log("No powerManagerService in window");
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+			};
+
+			window.SetLevelRunner = SetLevelRunner;
+		})();
+
+	</script>
+</head>
+
+<body style="background-color: white;">
+	<h1>Change power manager level example</h1>
+	<div class="container"></div>
+	<textarea style="width:100%;height: 100%"type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+
+</html>

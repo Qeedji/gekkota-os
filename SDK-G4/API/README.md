@@ -13,6 +13,24 @@ Gekkota supports SRT and WebVTT subtitles. An example shows you how to make an a
 **hidInput:**
 This document explains how to filter HID events from specific devices and components used by Gekkota.
 
+**io:**
+The IOManager API provides read/write access to certain locations of the filesystem
+
+**launcher.CacheManager:**
+The cache manager is responsible for managing the content of an app and its various modes of publication.
+
+**launcher.PlayLog:**
+The Playlog service allow to send event logging to a WebDav server.
+
+**launcher.MANIFEST:**
+This document describes the manifest format of Gekkota.
+
+**launcher.MANIFEST-XML:**
+This document describes the XML manifest format of Gekkota.
+
+**launcher.PowerManager:**
+The Power manager service allow to change the power level manually or through a calendar.
+
 **ldap:**
 The LDAP service allows to send synchronous and asynchronous search queries to an LDAP server and manage results.
 
