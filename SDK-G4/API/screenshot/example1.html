@@ -11,10 +11,12 @@
 		/************************************************************************/
 		(function () {
 			window.onload = function () {
+				function doCapture() {	
 				var testRunner = new window.ScreenshotTestRunner("example.screenshot");
 				// Root file system for captures is http://ip_player/.output/@your_path where @your_path is the first argument of "testCaptureObject" function
-				testRunner.testCaptureObject("any_folder/hub.ppk", "image/g4");
 				testRunner.testCaptureObject("any_folder/window.jpg", "image/jpeg");
+				}		
+				setTimeout(doCapture, 1000);
 			};
 		})();
 		/************************************************************************/

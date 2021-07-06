@@ -6,12 +6,12 @@ nsIScreenshot interface Reference
 Detailed Description
 --------------------
 
-The nsIScreenshot interface can only be used on SMH300.
+The nsIScreenshot interface can only be used on SMH300 and DMB400.
 
 void nsIScreenshot::captureObject (in nsIDOMWindow aWindow, in AUTF8String aOuputPath, in AUTF8String aMimetype, in unsigned long aRotationAngle)
 -------------------------------------------------------------------------------------------------------------------------------------------------
 
-Captures a picture from top left corner in 800x600 pixels from the Window object.
+Captures a picture from top left corner from the Window object. Picture size is 800x600 pixels on SMH300. Downscaling from display mode is performed on DMB400.
 
 <table>
 <caption>Parameters</caption>
@@ -30,11 +30,11 @@ Captures a picture from top left corner in 800x600 pixels from the Window object
 </tr>
 <tr class="odd">
 <td align="left">aMimetype</td>
-<td align="left"><p>Mime type of the output picture (supported: &quot;image/g4&quot;, &quot;image/jpeg&quot;). If null, choose default Mime type according to platform (supports)</p></td>
+<td align="left"><p>Mime type of the output picture (supported: &quot;image/jpeg&quot; on all plateforms, &quot;image/g4&quot; only on SMH300). If null, choose default Mime type according to platform (supports)</p></td>
 </tr>
 <tr class="even">
 <td align="left">aRotationAngle</td>
-<td align="left"><p>Specifies a rotation for the capture between 0-359° (not supported yet)</p></td>
+<td align="left"><p>Specifies a rotation in degrees for the capture (supported: 0, 90, 180 and 270)</p></td>
 </tr>
 </tbody>
 </table>
