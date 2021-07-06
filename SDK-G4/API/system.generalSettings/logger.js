@@ -28,6 +28,9 @@
         }
         message = "Log: " + message;
       }
+      if (elConsole.scrollTop >= elConsole.clientHeight) {
+        this.clearConsole();
+      }
       elConsole.innerHTML += message + "\n";
       elConsole.scrollTop = elConsole.scrollHeight;
     },

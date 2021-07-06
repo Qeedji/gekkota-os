@@ -36,6 +36,18 @@ Public Attributes
 
 <!-- -->
 
+-   readonly attribute ACString manufacturer
+
+<!-- -->
+
+-   readonly attribute ACString manufacturerUrl
+
+<!-- -->
+
+-   readonly attribute ACString manufacturerMail
+
+<!-- -->
+
 -   attribute AString field1
 
 <!-- -->
@@ -95,6 +107,18 @@ Hardware platform version.
 ### readonly attribute nsISystemHDCPStructure nsISystemGeneralSettings::hdcp
 
 Hardware platform HDCP information structure.
+
+### readonly attribute ACString nsISystemGeneralSettings::manufacturer
+
+Hardware platform manufacturer.
+
+### readonly attribute ACString nsISystemGeneralSettings::manufacturerUrl
+
+Manufacturer URL.
+
+### readonly attribute ACString nsISystemGeneralSettings::manufacturerMail
+
+Manufacturer email address.
 
 ### attribute AString nsISystemGeneralSettings::field1
 

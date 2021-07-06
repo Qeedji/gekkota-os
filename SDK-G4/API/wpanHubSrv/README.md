@@ -6,6 +6,10 @@ Public Attributes
 
 -   const unsigned long BASEURI\_SLATE\_PICTURE
 
+-   void addListener ( in nsIGktEventHandler aListener)
+
+<!-- -->
+
 -   void getFileInfo ( in unsigned long aBaseUri, in ACString aFilePath, out boolean aIsFileSync, out ACString aLastUpdateTime)
 
 <!-- -->
@@ -23,6 +27,9 @@ Member Data Documentation
 ### const unsigned long nsIWpanHubSrv::BASEURI\_SLATE\_PICTURE
 
 Base URI of the file Base URI Slate picture: the last directory name before the file you want info from must be the id of the Slate. For example the SLate of id 1 must end with "1/file.ppk"
+
+void nsIWpanHubSrv::addListener (in nsIGktEventHandler aListener)
+-----------------------------------------------------------------
 
 void nsIWpanHubSrv::getFileInfo (in unsigned long aBaseUri, in ACString aFilePath, out boolean aIsFileSync, out ACString aLastUpdateTime)
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -58,6 +65,7 @@ Returns information for a file regarding a device managed by the hub.
 Here is an example of how to use this function in Javascript :
 
     var wpanHubSrv = window.wpanHubSrv || {};
+    var SLATE_FILE_PATH = "/hub.ppk";
     if (wpanHubSrv.getFileInfo) {
        var slateId = 3;
        var sBaseUri = wpanHubSrv.BASEURI_SLATE_PICTURE;

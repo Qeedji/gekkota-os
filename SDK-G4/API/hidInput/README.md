@@ -3,7 +3,7 @@
 HID devices generate events which describes the user interaction with the device. In order for the application to know about specific sources that generates these events, they can be filtered with the HTML5 property **location** from the key event.
 The **location** property is a number representing the location of the key on the keyboard or other input device.
 
-The following constants allow to filter different Innes devices inputs:
+The following constants allow to filter different Qeedji devices inputs:
 
 ### const unsigned short nsIDOMKeyEvent::DOM\_KEY\_LOCATION\_RC\_CEC
 
