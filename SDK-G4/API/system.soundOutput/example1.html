@@ -2,7 +2,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>System sound example</title>
+	<title>System sound output example</title>
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<script src="logger.js"></script>
 	<script type="text/javascript">
@@ -12,7 +12,8 @@
 			/************************************************************************/
 			window.onload = function () {
 				var testRunner = new window.SoundTestRunner("example.system.sound");
-				testRunner.setVolume(50);		/** Audio volume to 50%. */
+				//testRunner.setVolume(50);		/** Change live audio volume to 50%. */
+				testRunner.storeVolume(90);		/** Set and save persistent audio volume to 90%. */
 				//testRunner.mute();
 			};
 		})();
@@ -47,6 +48,24 @@
 						this._logger.errorEx(e);
 					}
 				},
+				storeVolume: function (value) {
+					try {	
+						const Ci = window.Components.interfaces;
+						var soundOutput = Ci.nsISystemAdapterSoundOutput;
+						var soundAdapters = window.systemManager.getAdaptersByIId(soundOutput);
+						if(soundAdapters) {
+							var length = soundAdapters.length;
+							for(var i = 0; i < length; ++i){
+								var adapter = soundAdapters.queryElementAt(i, soundOutput);
+								adapter.registered.volume = value;
+								this._logger.log("Volume set and store to " + value + "% on adapter " + i);
+								}
+							window.preferenceManager.savePrefs();	/* Do not forget this line to save the changes into the persistent preferences */
+							}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},				
 				mute: function () {
 					try {	
 						const Ci = window.Components.interfaces;
@@ -73,7 +92,7 @@
 </head>
 
 <body>
-	<h1>System sound example</h1>
+	<h1>System sound output example</h1>
 	<div class="container"></div>
 	<textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
 </body>

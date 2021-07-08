@@ -82,7 +82,7 @@ The Serial API allows to read and write on a serial interface. Reads can be sync
 **system.sideLeds:**
 This API allows to manage the LEDs color on a SMT equipment.
 
-**system.sound:**
+**system.soundOutput:**
 This API allows to set audio outputs volume and mute
 
 **websql:**
