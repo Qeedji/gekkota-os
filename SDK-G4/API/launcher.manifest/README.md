@@ -199,7 +199,7 @@ The credential must be declared in the `<Description about="ns.innes.gekkota.man
 Example :
 
 ````xml
-<cache downloader-state="running">
+<Description about="ns.innes.gekkota.manifest#cache" downloader-state="running">
     <Bag>
       <li refresh="60" username="username@domain" password="pwd" optional="true" src="http://192.168.1.185/.medias/html/test.html">.medias/test.html</li>
       <li refresh="600" src="http://192.168.1.185/.medias/html/test2.html" credential="#credential2">.medias/test2.html</li>

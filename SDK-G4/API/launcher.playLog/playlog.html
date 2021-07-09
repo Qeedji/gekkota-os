@@ -1,0 +1,91 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Changing downloaderState of cache manager</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script type="text/javascript">
+		(function () {
+			/************************************************************************/
+			/*************** Here is the Test Suite you should modify ***************/
+			/************************************************************************/
+			window.onload = function () {
+				var testRunner = new window.PlayLogRunner("example.launcher.downloaderState");
+				testRunner.doPlayLog();
+			};
+		})();
+		/************************************************************************/
+		/*************** From here don't need to modify anything ****************/
+		/************************************************************************/
+
+		(function () {
+			function PlayLogRunner(name) {
+				try {
+					this._logger = new window.Logger(name);
+					this._logger.log("PlayLogRunner");
+				} catch (e) {
+					this._logger.errorEx(e);
+				}
+			}
+			PlayLogRunner.prototype = {
+				_addEvent: function (event)
+				{
+					var d = new Date();
+					var msg = ["DEBUG", d.toISOString(), event]
+					this._logger.log("Add event '" + event + "'");
+					playLogService.addEvent( msg, msg.length);
+				},
+				_generateEvent: function ()
+				{
+					const events = [
+						"event1",
+						"event2",
+						"event3",
+						"event4",
+						"event5",
+						"event6",
+						"event7",
+						"event8",
+						"event9",
+					];
+					const step = 100;
+					var num = Math.floor(Math.random() * events.length); 
+					this._addEvent(events[num]);
+					setTimeout(() => {this._generateEvent()}, (num+1)*step);
+				},
+
+				doPlayLog: function () {
+					try {
+						if ("playLogService" in window) {
+      						if (playLogService.isEnabled)
+							  {
+								this._logger.log("playLogService enabled, generate events");
+								this._generateEvent();
+							  }
+							  else {
+								this._logger.log("playLogService not enabled");
+							  }
+						} else {
+							this._logger.log("No playLogService in window");
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+			};
+
+			window.PlayLogRunner = PlayLogRunner;
+		})();
+
+	</script>
+</head>
+
+<body style="background-color: white;">
+	<h1>Generate playlog events example</h1>
+	<div class="container"></div>
+	<textarea style="width:100%;height: 100%"type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+
+</html>
