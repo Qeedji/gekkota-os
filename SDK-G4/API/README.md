@@ -83,7 +83,10 @@ The Serial API allows to read and write on a serial interface. Reads can be sync
 This API allows to manage the LEDs color on a SMT equipment.
 
 **system.soundOutput:**
-This API allows to set audio outputs volume and mute
+This API allows to set audio outputs volume and mute.
+
+**utils.preferenceManager:**
+The Preference manager service allow to change user preferences.
 
 **websql:**
 The Web SQL API allows to connect to an ODBC database and send synchronous and asynchronous queries.
