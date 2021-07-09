@@ -4,11 +4,11 @@ nsICacheManager interface Reference
 Public Attributes
 -----------------
 
--   const short DOWNLOADER\_STATE\_PAUSE
+-   const short DOWNLOADER\_STATE\_PAUSED
 
 <!-- -->
 
--   const short DOWNLOADER\_STATE\_RUN
+-   const short DOWNLOADER\_STATE\_RUNNING
 
 <!-- -->
 
@@ -106,16 +106,16 @@ The initial state of this attribute (RUNING by default) can be modified by the m
 JavaScript example to modify the `downloaderState` attribute :
 
     const Ci = Components.interfaces;
-    cacheManager.downloaderState = Ci.nsICacheManager.PAUSED
+    cacheManager.downloaderState = Ci.nsICacheManager.DOWNLOADER_STATE_PAUSED
 
 Member Data Documentation
 -------------------------
 
-### const short nsICacheManager::DOWNLOADER\_STATE\_PAUSE
+### const short nsICacheManager::DOWNLOADER\_STATE\_PAUSED
 
 Downloaders (manifest, resources) are not active
 
-### const short nsICacheManager::DOWNLOADER\_STATE\_RUN
+### const short nsICacheManager::DOWNLOADER\_STATE\_RUNNING
 
 Downloaders (manifest, resources) are active
 

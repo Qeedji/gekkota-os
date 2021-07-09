@@ -37,10 +37,10 @@
 							this._logger.log("Pause downloader in " + duration + "s");
 							window.setTimeout(() => {
 								this._logger.log("Pause downloader");
-								cacheManager.downloaderState = Ci.nsICacheManager.PAUSED;
+								cacheManager.downloaderState = Ci.nsICacheManager.DOWNLOADER_STATE_PAUSED;
 								this._logger.log("Running downloader in " + duration + "s");
 								window.setTimeout(() => { 
-									cacheManager.downloaderState =  Ci.nsICacheManager.RUNNING;
+									cacheManager.downloaderState =  Ci.nsICacheManager.DOWNLOADER_STATE_RUNNING;
 									this._logger.log("Running downloader");
 								}, duration*1000);
 							}, duration * 1000);
