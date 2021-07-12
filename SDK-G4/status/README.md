@@ -25,13 +25,6 @@ This file allows to (at a specific date) :
 * Describe the device configuration (device),
 * Describe the device status (status).
 
-````mermaid
-graph TD
-    B[status file]
-    B-->C(device)
-    B-->D(status);
-````
-
 ## Example
 
 ````xml
