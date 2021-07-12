@@ -80,7 +80,7 @@ The NFC System Adapter API provides some interfaces and callbacks to detect and 
 The Serial API allows to read and write on a serial interface. Reads can be synchronous or asynchronous with a listener.
 
 **system.serversUri:**
-This explains how to retreive URI of content server and softwares/configurations server.
+This explains how to retrieve URI of content server and softwares/configurations server.
 
 **system.sideLeds:**
 This API allows to manage the LEDs color on a SMT equipment.
