@@ -1,0 +1,72 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Retreiving servers URI</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script type="text/javascript">
+		(function () {
+			/************************************************************************/
+			/*************** Here is the Test Suite you should modify ***************/
+			/************************************************************************/
+			window.onload = function () {
+				var testRunner = new window.ServersURITestRunner("example.system.serversURI");
+				testRunner.getManifestServerURI();
+				testRunner.getAddonServerURI();
+			};
+		})();
+		/************************************************************************/
+		/*************** From here don't need to modify anything ****************/
+		/************************************************************************/
+
+		(function () {
+			function ServersURITestRunner(name) {
+				try {
+					this._logger = new window.Logger(name);
+					this._logger.log("ServersURITestRunner");
+				} catch (e) {
+					this._logger.errorEx(e);
+				}
+			}
+			ServersURITestRunner.prototype = {
+				getManifestServerURI: function () {
+					try {
+						if ("systemManager" in window) {
+							const manifestDownloader = systemManager.getApplicationProfileBindingsByProfileUri("manifest-downloader").queryElementAt(0, Components.interfaces.nsILauncherAPBManifestDownloader);
+        					this._logger.log("Manifest Server URI = " + manifestDownloader.baseUri);
+						} else {
+							this._logger.log("No systemManager in window");
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				getAddonServerURI: function () {
+					try {
+						if ("systemManager" in window) {
+							const addonManager = systemManager.getApplicationProfileBindingsByProfileUri("addon-manager").queryElementAt(0, Components.interfaces.nsILauncherAPBAddonManager);	
+        					this._logger.log("Addon Server URI = " + addonManager.baseUri);
+						} else {
+							this._logger.log("No systemManager in window");
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},				
+			};
+
+			window.ServersURITestRunner = ServersURITestRunner;
+		})();
+
+	</script>
+</head>
+
+<body>
+	<h1>Retreiving servers URI</h1>
+	<div class="container"></div>
+	<textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+
+</html>
