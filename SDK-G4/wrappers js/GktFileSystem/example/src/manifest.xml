@@ -9,7 +9,7 @@
     <Description about="ns.innes.gekkota.manifest#cache">
         <Bag>
             <li>app.html</li>
-			<li>gkt-filesystem-1.2.0.min.js</li>
+			<li>gkt-filesystem.min.js</li>
 			<li>Aeroplane.zip</li>
         </Bag>
     </Description>
