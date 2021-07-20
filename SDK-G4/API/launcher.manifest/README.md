@@ -17,7 +17,7 @@ manifest.[ID].xml
 where `[ID]` is the unique identifier of the device.
 This identifier depends on the value of the `innes.appli.device-id-type` preference :
 
-+ 0 : MAC address of the platform (MAC of the first network interface - example "30-9C-23-1E-D8-1B"),
++ 0 : MAC ID of the platform (MAC address of the a determined network interface that is always present on this type of platform - example "30-9C-23-1E-D8-1B"),
 + 1 : name of the platform (hostname),
 + 2 : UUID of the platform (example "00000000-0000-0000-0001-00e04b3b3e9a").
 
@@ -99,6 +99,7 @@ It can contain the following optional nodes :
 + `<Description about="ns.innes.gekkota.manifest#metadata">`
 + `<Description about="ns.innes.gekkota.manifest#launcher">`
 + `<Description about="ns.innes.gekkota.manifest#credentials">`
++ `<Description about="ns.innes.gekkota.manifest#variables">`
 
 ## `<Description about="ns.innes.gekkota.manifest#metadata">` node
 
@@ -204,6 +205,7 @@ Example :
       <li refresh="60" username="username@domain" password="pwd" optional="true" src="http://192.168.1.185/.medias/html/test.html">.medias/test.html</li>
       <li refresh="600" src="http://192.168.1.185/.medias/html/test2.html" credential="#credential2">.medias/test2.html</li>
       <li refresh="manifest-update" src="http://192.168.1.185/.medias/html/test3.html">.medias/test3.html</li>
+      <li>.medias/test4.html</li>
       <li refresh="none">.medias/reserved/</li>
     </Bag>
 </Description>
