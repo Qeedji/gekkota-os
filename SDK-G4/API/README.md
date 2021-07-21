@@ -13,7 +13,7 @@ Gekkota supports SRT and WebVTT subtitles. An example shows you how to make an a
 **hidInput:**
 This document explains how to filter HID events from specific devices and components used by Gekkota.
 
-**io:**
+**ioManager:**
 The IOManager API provides read/write access to certain locations of the filesystem
 
 **launcher.cacheManager:**
@@ -54,7 +54,7 @@ The PPTX slideshow viewer API allows you to play and interract with a PPTX docum
 **system.avCapture:**
 This Audio Video Capture API provides a set of methods to capture input streams.
 
-**system.avcmd:**
+**system.avCmd:**
 This API allows to send commands to an audio/video device (e.g. TV).
 
 **system.ddcOutput:**
