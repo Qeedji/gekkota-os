@@ -11,6 +11,7 @@
             <li>app.html</li>
 			<li>logger.js</li>
 			<li>style.css</li>
+            <li>gkt-filesystem-1.2.1.min.js</li>
         </Bag>
     </Description>
     <Description about="ns.innes.gekkota.manifest#launcher"
