@@ -10,6 +10,9 @@ Explains how to use the video decoding group, a CSS property allowing to share d
 **avmedia.subtitles:**
 Gekkota supports SRT and WebVTT subtitles. An example shows you how to make an app that display the subtitles and how to let Gekkota display them.
 
+**failSoftMode**
+This document describes the Fail Soft Mode feature.
+
 **hidInput:**
 This document explains how to filter HID events from specific devices and components used by Gekkota.
 
