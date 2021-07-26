@@ -16,6 +16,7 @@
 				var testRunner = new window.ScreenshotTestRunner("example.screenshot");
 				// Root file system for captures is http://ip_player/.output/@your_path where @your_path is the first argument of "testCaptureObject" function
 				testRunner.testCaptureObject("any_folder/window.jpg", "image/jpeg");
+				testRunner.testReadImage(".output/any_folder/window.jpg");
 				}		
 				setTimeout(doCapture, 1000);
 			};
@@ -40,9 +41,11 @@
 					} catch (error) {
 						this._logger.errorEx(error);
 					}
+				},
 
+				testReadImage: function (imageFile) {
 					try {
-						const f = GktFileSystem.root().newFile(".output/any_folder/window.jpg");
+						const f = GktFileSystem.root().newFile(imageFile);
 
 						f.stat().execute().then(
 						(s) => {
@@ -56,10 +59,9 @@
 						}
 						);
 
-						f.read({responseType: "text", charset: "UTF-8" }).execute().then(
-						(str) => {
-							this._logger.log("Read screenshot file content OK");
-							//this._logger.log("Read screenshot file content OK: " + str);
+						f.read({responseType: "arraybuffer"}).execute().then(
+						(data) => {
+							this._logger.log("Read screenshot file content OK: " + data.byteLength + " bytes");
 						},
 						(e) => {
 							this._logger.errorEx(e);
