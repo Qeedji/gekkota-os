@@ -11,7 +11,7 @@ The nsIScreenshot interface can only be used on SMH300 and DMB400.
 void nsIScreenshot::captureObject (in nsIDOMWindow aWindow, in AUTF8String aOuputPath, in AUTF8String aMimetype, in unsigned long aRotationAngle)
 -------------------------------------------------------------------------------------------------------------------------------------------------
 
-Captures a picture from top left corner from the Window object. Picture size is 800x600 pixels on SMH300. Downscaling from display mode is performed on DMB400.
+Captures a picture from top left corner from the Window object. Picture size is 800x600 pixels on SMH300. Downscaling from display mode is performed on DMB400 to match with the width indicated in 'innes.screenshot.width-max' preference.
 
 <table>
 <caption>Parameters</caption>
