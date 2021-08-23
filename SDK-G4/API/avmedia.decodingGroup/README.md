@@ -37,3 +37,7 @@ video_2.play();                             // first frame of video_2 is display
 
 video_sequence.removeChild(video_1);        // other resources used by video_1 will be released asynchronously
 ````
+
+You can find [here](example1.html) a complete HTML example using decoding groups to manage several video sequences.
+
+**Build note**: You need to execute the **build.cmd** file to generate the boostrap app. Otherwise there will be a mismatch between the html file name and the one the manifest tries to launch. Find more information in *SDK-G4/bootstrap App/* documentation.

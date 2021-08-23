@@ -1,0 +1,181 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Decoding group example</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script type="text/javascript">
+		(function () {
+			/************************************************************************/
+			/*************** Here is the Test Suite you should modify ***************/
+			/************************************************************************/
+			window.onload = function () {
+				var testRunner = new window.DGTestRunner("example.decodingGroup");
+				testRunner.loadMain1();
+				if (systemGeneralSettings.platform === "dmb400")
+					testRunner.loadPip1();
+			};
+		})();
+		/************************************************************************/
+		/*************** From here don't need to modify anything ****************/
+		/************************************************************************/
+
+		(function () {
+			function DGTestRunner(name) {
+				try {
+					this._logger = new window.Logger(name);
+					this._logger.log("DGTestRunner");
+
+					this.main_1 = document.createElement('video');
+					this.main_1.addEventListener("ended", this.loadMain2.bind(this));
+					this.main_1.addEventListener("canplay", this.startMain1.bind(this));
+					this.main_2 = document.createElement('video');
+					this.main_2.addEventListener("ended", this.loadMain1.bind(this));
+					this.main_2.addEventListener("canplay", this.startMain2.bind(this));
+					main_sequence = document.getElementById("main_container");
+					main_sequence.appendChild(this.main_1);
+					main_sequence.appendChild(this.main_2);
+
+					if (systemGeneralSettings.platform === "dmb400") {
+						this.uhd_enabled = true;
+						this.pip_container = document.createElement('div');
+						this.pip_container.setAttribute("id", "pip_container");
+						document.body.appendChild(this.pip_container);
+						this.pip_1 = document.createElement('video');
+						this.pip_1.addEventListener("ended", this.loadPip2.bind(this));
+						this.pip_1.addEventListener("canplay", this.startPip1.bind(this));
+						this.pip_2 = document.createElement('video');
+						this.pip_2.addEventListener("ended", this.loadPip1.bind(this));
+						this.pip_2.addEventListener("canplay", this.startPip2.bind(this));
+						this.pip_container.appendChild(this.pip_1);
+						this.pip_container.appendChild(this.pip_2);
+					}	  					  				 					  
+				} catch (e) {
+					this._logger.errorEx(e);
+				}
+			}
+			DGTestRunner.prototype = {		
+
+				loadMain1: function () {
+					try {
+						if (this.uhd_enabled)
+							this.main_1.src = "videoUHD_1.mp4";
+						else
+							this.main_1.src = "video_1.mp4";		                                       
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+
+				startMain1: function () {
+					try {
+						this.main_1.play();  
+						this.main_2.src = null;                                        
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},				
+
+				loadMain2: function () {
+					try {
+						if (this.uhd_enabled)
+							this.main_2.src = "videoUHD_2.mp4";
+						else
+							this.main_2.src = "video_2.mp4";	       
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+
+				startMain2: function () {
+					try { 				
+						this.main_2.play();  
+						this.main_1.src = null;                                        
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+
+				loadPip1: function () {
+					try {
+						this.pip_1.src = "video_1.mp4";                                       
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+
+				startPip1: function () {
+					try {
+						this.pip_1.play();  
+						this.pip_2.src = null;                                        
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},				
+
+				loadPip2: function () {
+					try {
+						this.pip_2.src = "video_2.mp4";         
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+
+				startPip2: function () {
+					try { 				
+						this.pip_2.play();  
+						this.pip_1.src = null;                                        
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},														
+
+			};
+
+			window.DGTestRunner = DGTestRunner;
+		})();
+
+	</script>
+
+	<style>
+		video {
+			position: absolute;
+			width: 100%;
+  			height: 100%;
+		}
+
+		#main_container {  			
+			-gkt-video-decoding-group:"MAIN";
+			width: 100%;
+  			height: 100%;
+  			position: fixed;
+  			top: 0;
+  			left: 0;
+			background-color: #fff;
+			z-index: 0;
+		}
+
+		#pip_container {  			
+			-gkt-video-decoding-group:"PIP";
+			width: 30%;
+  			height: 30%;
+  			position: fixed;
+  			top: 70%;
+  			left: 70%;
+			background-color: #000;
+			z-index: 1;
+		}		
+	</style>
+
+</head>
+
+<body>
+	<h1>Decoding group example</h1>
+	<div id="main_container">
+	</div>	
+	<textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+
+</html>
