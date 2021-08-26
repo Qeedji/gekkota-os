@@ -13,9 +13,9 @@ The conservation of the configuration during subsequent installations of the App
 
 ## App example
 
-In the example provided, the WebUI simply allows you to modify the message displayed by the App.
+In the example provided, the WebUI simply allows you to modify the message displayed by the App on the device screen.
 
-A link named "Administration Console" displays the standard administration page.
+In `index.html`, a link named "Administration Console" provides access to the standard administration page of the device's WebUI.
 
 It is possible to record debugging messages from the App by adding the entry `app.configuration-by-webui` in the `maintenance->Logs` tab of the device's WebUI.
 
