@@ -1,0 +1,312 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Scroller example</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script type="text/javascript">
+		(function () {
+			/************************************************************************/
+			/*************** Here is the Test Suite you should modify ***************/
+			/************************************************************************/
+			window.onload = function () {
+				var testRunner = new window.ScrollerTestRunner("example.scroller");
+			};
+		})();
+		/************************************************************************/
+		/*************** From here don't need to modify anything ****************/
+		/************************************************************************/
+
+		(function() {
+			var gktScroller;
+			window.overlayScroller = {
+
+				init: function overlay_init(aListener, aErrorListener, aParent, aDirection, aPixelsPerSecond) {
+					gktScroller = new GktScroller(aListener, aErrorListener, aParent, aDirection, aPixelsPerSecond);
+					window.addEventListener("unload", function() {
+						gktScroller.destroy();
+						gktScroller = null;						
+					}, false);
+				},
+
+				setCanvasBuffer : function overlay_setCanvasBufferAsync(b, func) {
+					if(typeof(gktScroller.setCanvasBufferAsync) == "undefined") {
+						gktScroller.setCanvasBuffer(b);
+						func();
+					} else {
+						gktScroller.setCanvasBufferAsync(b, func); 
+					}
+					b.width = 0;
+					b.height = 0;
+				},
+				
+				start: function overlay_start() {
+					gktScroller.start();
+				},
+				play: function overlay_play() {
+					gktScroller.play();
+				},
+				pause: function overlay_pause() {
+					gktScroller.pause();
+				},
+			};
+			
+		})();
+
+
+		(function () {
+
+			function ScrollerTestRunner(name) {
+				try {
+					this.backgroundColor = "black";
+					this.fontColor = "white";
+					this.fontSizePer = 35;
+					this.fontName = "Arial";
+					this.fontStyle = "normal";
+					this.fontWeight = "normal";
+					this.speed = 200;
+					this.direction = GktScroller.rightToLeft;
+					this.lines = ["QEEDJI", "SCROLLER DEMO" ];
+
+					this._logger = new window.Logger(name);
+					this._logger.log("New ScrollerTestRunner");
+
+					var documentStyle = document.documentElement.style;
+      				documentStyle.backgroundColor = this.backgroundColor;
+    				documentStyle.color = this.fontColor; 					
+					var div = document.body.querySelector(".cell");
+      				this._parent = div.querySelector(".parent");
+					if (this.direction == GktScroller.leftToRight || this.direction == GktScroller.rightToLeft) {
+						div.style.verticalAlign = "middle";
+        				this._parent.style.width = "100%";
+				    } else {
+				        div.style.textAlign = "center";
+				        this._parent.style.height = "100%";
+				    }	  
+
+					while (this._parent.firstChild != null) {
+        				this._parent.removeChild(this._parent.firstChild);
+      				}
+					this.buffer = document.createElement("canvas");
+					this._parent.appendChild(this.buffer);
+
+					this.scroller = overlayScroller;
+					this.scroller.init(this.nextLine.bind(this), this.errorFunc.bind(this), this._parent, this.direction , this.speed);
+
+					this.currentLine = 0;
+					this.drawCanvas(this.buffer, this.lines[this.currentLine]);
+					this.scroller.setCanvasBuffer(this.buffer, this.scroller.start);
+				}
+				catch(ex)
+				{
+					this._logger.errorEx(ex);
+				}	
+			}
+
+			ScrollerTestRunner.prototype = {	
+
+			getComputedHeight: function () {
+				var oTopWindow = window;
+				for (; ;) {
+					var tempWindow = oTopWindow;
+					if (oTopWindow.xpfDocument) {
+					tempWindow = oTopWindow.xpfDocument.defaultView;
+					} else {
+					tempWindow = oTopWindow.top;
+					}
+					if (tempWindow && tempWindow !== oTopWindow) {
+					oTopWindow = tempWindow;
+					} else {
+					break;
+					}
+				}
+				// We want to have a height of 650px for a window height of 1080px.
+				return Math.round(oTopWindow.innerHeight * 650 / 1080);
+			},
+
+			getComputedFontSize: function () {
+				var iFontSize,
+					maxHeight;
+
+				maxHeight = this.getComputedHeight();
+				// This will be the height for a size of 100%.
+				iFontSize = Math.max(10, Math.trunc(Math.max(maxHeight, 10) * this.fontSizePer / 100));
+				this._logger.log("getComputedFontSize maxHeight: " + maxHeight + " fontSize: " + iFontSize);
+				return iFontSize;
+			},
+
+			getComputedFont: function () {
+				var iFontHeight = 1.2,
+					iFontSize = this.getComputedFontSize(),
+					sFont = this.fontStyle + " " + this.fontWeight + " " + Math.trunc(iFontSize / iFontHeight) + "px/" + iFontHeight + "\"" + this.fontName + "\"";
+
+					this._logger.log("getComputedFont from: " + this.fontName + " to: " + sFont);
+				return sFont;
+			},
+
+			getComputedFontCanvas: function () {
+				var iFontHeight = 1.2,
+					iFontSize = this.getComputedFontSize(),
+					sFont = this.fontStyle + " " + this.fontWeight + " " + Math.trunc(iFontSize / iFontHeight) + "px/" + iFontHeight + "\"" + this.fontName + "\"";
+
+					this._logger.log("getComputedFont canas from: " + this.fontName + " to: " + sFont);
+				return sFont;
+			},						
+
+			//Error callback
+			errorFunc : function errorFunc() {
+					var a = "triggerError ";
+					for(var i = 0; i < arguments.length; ++i) {
+						if(arguments[i] != null) {
+							a += arguments[i].toString();
+						} else {
+							a += arguments[i];
+						}
+					}
+					this._logger.log(a);
+			},
+
+			nextLine : function nextLine() {
+					this._logger.log("Next line");
+					this.currentLine = (this.currentLine+1) % this.lines.length;
+					this.drawCanvas(this.buffer, this.lines[this.currentLine]);
+					this.scroller.setCanvasBuffer(this.buffer, this.scroller.start);					
+			},			
+
+			drawCanvas : function drawCanvas(canvas, line) {
+			
+				try{
+					var pStyle;
+					this.measureP = document.createElement("p");
+					this.measureP.className = "measure";
+					pStyle = this.measureP.style;
+					pStyle.font = this.getComputedFont();
+					document.body.appendChild(this.measureP);
+
+					var fontCanvas = this.getComputedFontCanvas();
+					var ctx = canvas.getContext("2d", { willReadFrequently: true });
+					ctx.font = fontCanvas;
+						
+					var width = 0;
+					var height = 0;
+
+					this.measureP.textContent = line;
+					var m = ctx.measureText(line);
+					var lwidth = Math.ceil(this.measureP.offsetWidth);
+					if(m && "width" in m) {
+						lwidth = Math.max(lwidth, Math.ceil(m.width));
+					}
+					var lheight = Math.ceil(this.measureP.offsetHeight);
+					if(m && "height" in m) {
+						lheight = Math.max(lheight, Math.ceil(m.height));
+					}
+					width = Math.max(lwidth, width);
+					height += lheight;
+
+					canvas.width = width;
+					canvas.height = height;
+					this._logger.log("canvas size = " + width + "," + height);
+
+					ctx.clearRect(0, 0, width, height);
+					ctx.fillStyle = ctx.strokeStyle = this.backgroundColor;
+					ctx.fillRect(0, 0, width, height);
+
+					ctx.font = fontCanvas;
+					ctx.textBaseline = "middle";
+					ctx.fillStyle = ctx.strokeStyle = this.fontColor;
+      				ctx.globalAlpha = 1.0;
+
+					// Rely on half the height of the canvas.
+					var hpos = height / 2;
+					var wpos;
+					wpos = Math.ceil((width - lwidth) >> 1);
+					this._logger.log("draw line \"" + line + "\" at " + wpos + "," + hpos);
+					ctx.fillText(line, wpos, hpos);
+
+					pStyle.display = "none";
+				}
+				catch(ex)
+				{
+					this._logger.errorEx(ex);
+				}			
+			},						
+													
+			};
+
+			window.ScrollerTestRunner = ScrollerTestRunner;
+		})();
+
+	</script>
+
+	<style>
+		*{
+			margin:0px;
+			padding:0px;
+		}
+
+		html {
+			width:100%;
+			height:100%;
+			overflow:hidden;
+		}
+
+		body {
+			position:fixed;
+			width:100%;
+			height:100%;
+			display:table;
+			overflow:hidden;
+		}
+
+		.cell {
+			position:fixed;
+			width:100%;
+			height:20%;
+			display:table-cell;
+			overflow:hidden;
+		}
+
+		.measure {
+			visibility:hidden;
+			position:fixed;
+		}
+
+		.parent {
+			overflow:hidden;
+		}
+
+		.parent > * {
+			display:none;
+			position:relative;
+		}
+		
+		p {
+			white-space:nowrap;
+		}
+
+		#console{
+			position:absolute;
+			left:5%;
+			top:40%;
+			height:50%;
+			width:50%;
+			overflow:auto;
+			font-size:10px;
+			color:#00FF00;
+			background-color:rgba(0,0,0,0.5);
+		}
+	</style>
+
+</head>
+
+<body>
+	<!-- On SMA300, div 'cell' must have a fixed position and a height less than 20% of screen height -->
+	<div class="cell">
+		<div class="parent" id="parent"></div>
+	</div>	
+	<textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+
+</html>

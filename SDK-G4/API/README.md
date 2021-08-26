@@ -48,6 +48,9 @@ It is possible to join and leave a multicast group.
 The Screenshot API allows to capture a picture of a Window object. The capture is from top left corner in 800x600 pixels and its output
 format can be either JPEG or PPK (format for Slate106 devices).
 
+**scroller:**
+The GktScroller API allows to initialize and control a scrolling text using overlay and hardware acceleration.  
+
 **slideshow.pdf:**
 The PDF slideshow viewer API allows you to play and interract with a PDF document in an iframe. It uses iframe messages to send commands and receive information.
 
