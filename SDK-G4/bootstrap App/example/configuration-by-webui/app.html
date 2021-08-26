@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta content="c94f440b-65a8-4961-bc71-431b731e6102" name="uuid">
+	<meta content="regular-app" name="generator">
+	<meta content="2021-08-05T14:43:23.605Z" name="date-revision">
+	<meta content="configuration-by-webui" name="app-name">
+
+	<script type="text/javascript" src="libs/logger.js"></script>
+	<style type="text/css">
+		
+        html {
+            background-color: white;
+        }
+		#main {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			margin: 0;
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+
+		#message {
+			font-size: 2em;
+			text-align: center;
+			padding-top: 25%;
+		}
+	</style>
+
+	<script>
+
+		//=============================================================================
+		
+		var logger = new Logger("app.configuration-by-webui");
+        var watcher;
+        var rootPath;
+        const CONFIG_FILE="app-config.json"
+        const CONFIG_URL="/" + CONFIG_FILE
+		function log(msg, level) {
+			if (level === 2) {
+				logger.error(msg);
+			} else {
+				logger.debug(msg);
+			}
+		};
+		function load() {
+			log("load");
+            var index = document.URL.lastIndexOf("/")
+            rootPath = document.URL.substring(0, index)
+            getMessage();
+            watcher = new FileSystemWatcher({
+                listener: new FileMonitorListener(),
+                recursive: false,
+                rootPath: "./",
+            });
+            watcher.startWatching()
+		}
+		function unload() {
+			log("unload");
+			try {
+                watcher.stopWatching()
+			}
+			catch (ex) {
+				log("Exception  " + ex, 2);
+			}
+		}
+        function FileMonitorListener ()
+        {
+
+        }
+        FileMonitorListener.prototype =  {
+            onStartWatching: function () {
+             log("onStartWatching");
+            },
+            onFileSystemChanged: function (aFilePath) {
+             log("onFileSystemChanged aFilePath = " + aFilePath);
+             if (aFilePath == CONFIG_FILE)
+             {
+                 getMessage();
+             }
+            },
+            onFileSystemAdded: function (aFilePath) {
+             log("onFileSystemAdded aFilePath = " + aFilePath);
+             if (aFilePath == CONFIG_FILE)
+             {
+                 getMessage();
+             }
+            }
+        };
+        function getMessage()
+        {
+            try {
+                log("Get configuration ")
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", rootPath + CONFIG_URL);
+                // xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+                xhr.responseType = "json"
+                xhr.onload = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200)
+                    {
+                        var config = xhr.response;
+                        log ("config.message = " + config.message)
+                        document.getElementById("message").textContent = config.message
+                    }
+                }
+                xhr.onerror = function () {
+                    
+                    log("XHR Error", 2)
+                }
+                xhr.send();
+            }
+            catch (ex) {
+                log("Exception  " + ex, 2);
+            }
+        }
+
+	</script>
+</head>
+
+<body onload="load()" onunload="unload()">
+	<div id="main">
+        <div id="message">
+            Change this message with the device WebUI
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<script>
+		//=============================================================================
+		// Adjust as required (All times are in milliseconds)
+
+		// Other default parameters
+		var DEBUG = false;
+		var backgroundColor = "#FFFFFF";
+
+	</script>
+	<style type="text/css">
+		#main {
+			padding-top: 10%;
+			position: absolute;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			margin: 0;
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+        #main * {
+			/* font-size: 1em; */
+        }
+		
+        #top {
+			text-align: right;
+		}
+        #admin {
+			text-align: right;
+		}
+	</style>
+
+	<script>
+
+		//=============================================================================
+        function validate() {
+            var url = "/.playout/app-config.json"
+            try {
+                var xhr = new XMLHttpRequest();
+                xhr.open("PUT", url, true);
+                xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+                xhr.onerror = function () {
+                    throw "Error"
+                }
+                var data = {};
+                var message = document.getElementById("message")
+                data.message = message.value;
+                var json = JSON.stringify(data);
+                xhr.send(json);
+            }
+            catch (ex) {
+            }
+        }
+
+	</script>
+</head>
+
+<body onload="load()" onunload="unload()">
+    <div id="top">
+        <a id="admin" href="/../.admin/">Administration console</a>
+    </div>
+	<div id="main">
+        <label for="message">Message to display</label>
+        <input id="message" type="text" size=50 />
+        <input type="button" id="validate"/ value="Validate" onclick="validate()">
+    </div>
+</body>
+
+</html>
