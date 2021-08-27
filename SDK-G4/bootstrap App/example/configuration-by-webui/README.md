@@ -1,10 +1,10 @@
 # Configuration of an App via the device's `WebUi`
 
-This example is used to configure the App using an HTML document displayed in the device's `WebUI`.
+This example is used to configure the App using an HTML page displayed in the device's `WebUI`.
 
 ## Principles
 
-This document, named `index.html` is placed in the directory of the App. When you access the device's `WebUI`, it is displayed. You can define the configuration of the App there. During validation, the configuration is sent by an `XmlHttpRequest` in the form of a JSON file named `app-config.json` in the directory of the App. Saving the configuration in a JSON file is just an example, the App can naturally use any other format to store its configuration on the device.
+This page, named `index.html` is placed in the directory of the App. When you access the device's `WebUI`, it is displayed. You can define the configuration of the App there. During validation, the configuration is sent by an `XmlHttpRequest` in the form of a JSON file named `app-config.json` in the directory of the App. Saving the configuration in a JSON file is just an example, the App can naturally use any other format to store its configuration on the device.
 
 For its part, the `app.html` retrieves the configuration from the JSON file `app-config.json` via an `XmlHttpRequest`. 
 It can also follow changes to the configuration live by setting up a listening mode on its main directory (with a `FileSystemWatcher` object).
