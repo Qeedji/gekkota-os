@@ -57,6 +57,9 @@ The PDF slideshow viewer API allows you to play and interract with a PDF documen
 **slideshow.pptx:**
 The PPTX slideshow viewer API allows you to play and interract with a PPTX document in a DIV. It is a viewer components with an API to send commands and receive information.
 
+**system.architecture:**
+This API describes the hardware architecture of the device and provides information on the main components (CPU, GPU, etc).
+
 **system.avCapture:**
 This Audio Video Capture API provides a set of methods to capture input streams.
 

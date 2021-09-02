@@ -1,0 +1,116 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>System architecture example</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script type="text/javascript">
+	    const Ci = Components.interfaces;
+		(function () {
+			/************************************************************************/
+			/*************** Here is the Test Suite you should modify ***************/
+			/************************************************************************/
+			window.onload = function () {
+				var testRunner = new window.ArchitectureTestRunner("example.system.architecture");
+				testRunner.showHardwareComponentsByType(Ci.nsISystemHardwareComponent.COMPONENT_TYPE_BOARD);
+				testRunner.showHardwareComponentsByType(Ci.nsISystemHardwareComponent.COMPONENT_TYPE_GPU2D);
+			};
+		})();
+		/************************************************************************/
+		/*************** From here don't need to modify anything ****************/
+		/************************************************************************/
+
+		(function () {
+			function ArchitectureTestRunner(name) {
+				try {
+					this._logger = new window.Logger(name);
+					this._logger.log("ArchitectureTestRunner");
+				} catch (e) {
+					this._logger.errorEx(e);
+				}
+			}
+			ArchitectureTestRunner.prototype = {
+				showHardwareComponentsByType: function (componentType) {
+					try {
+						if ("systemManager" in window && systemManager.architecture) {
+							var architecture = systemManager.architecture;
+							var components = architecture.getHardwareComponentsByType(componentType);
+							var str = "";
+							str = this._showComponents(components, str);
+							this._logger.log("Hardware Components of type " + componentType + "\n" + str)
+						} else {
+							this._logger.log("architecture component not available");
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				_indent: 0,
+				_showComponents: function (components, str) {
+					if (!(components && components.length))
+		  			{
+						return str;
+					}
+					str += this._getIndent() + "[\n"
+					this._indent += 4
+					for (var i = 0; i < components.length; i++)
+					{
+						str = this._showComponent(components.queryElementAt(i,Ci.nsISystemHardwareComponent), str)
+					}
+					this._indent -= 4
+					str += this._getIndent() + "]\n"
+					return str;
+				},
+				_showComponent: function (component, str) {
+					str += this._getIndent() + "{\n"
+					this._indent += 4
+					str += this._getIndent() + "\"type\":" + component.type + "\n";
+					str += this._getIndent() + "\"typeName\":\"" + component.typeName + "\"\n";
+					str += this._getIndent() + "\"reference\":\"" + component.reference + "\"\n";
+					str += this._getIndent() + "\"label\":\"" + component.label + "\"\n";
+					str += this._getIndent() + "\"identifier\":\"" + component.identifier + "\"\n";
+					if (component.type == Ci.nsISystemHardwareComponent.COMPONENT_TYPE_MICROPROCESSOR)
+					{
+						var c = component.QueryInterface(Ci.nsISystemMicroprocessorUnit)
+						str += this._getIndent() + "\"nbCores\":" + c.nbCores + "\n";
+						str += this._getIndent() + "\"architecture\":\"" + c.architecture + "\"\n";
+					}
+					else if (component.type == Ci.nsISystemHardwareComponent.COMPONENT_TYPE_MICROCONTROLER)
+					{
+						var c = component.QueryInterface(Ci.nsISystemMicrocontrolerUnit)
+						str += this._getIndent() + "\"multiprocessingMode\":" + c.multiprocessingMode + "\n";
+						str += this._getIndent() + "\"nbCores\":" + c.nbCores + "\n";
+						str += this._getIndent() + "\"architecture\":\"" + c.architecture + "\"\n";
+					}
+					str = this._showComponents(component.subcomponents, str)
+					this._indent -= 4
+					str += this._getIndent() + "},\n"
+					return str;
+
+				},
+				_getIndent : function()
+				{
+					var str = "";
+					for (var i = 0; i < this._indent; i++)
+					{
+						str += " ";
+					}
+					return str
+				}
+			};
+
+			window.ArchitectureTestRunner = ArchitectureTestRunner;
+		})();
+
+	</script>
+<script type="text/xml">
+</script></head>
+
+<body>
+	<h1>System architecture example</h1>
+	<textarea _style="width:100%;height:100%" type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+
+</html>
