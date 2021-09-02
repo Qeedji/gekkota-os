@@ -211,7 +211,7 @@ Public Attributes
 Detailed Description
 --------------------
 
-Interface XPCOM nsISystemHardwareComponent exposed by hardware components of type COMPONENT\_TYPE\_MICROPROCESSOR\_UNIT
+Interface XPCOM nsISystemHardwareComponent exposed by hardware components of type COMPONENT\_TYPE\_MICROPROCESSOR
 
 Member Data Documentation
 -------------------------
@@ -251,7 +251,7 @@ Public Attributes
 Detailed Description
 --------------------
 
-Interface XPCOM nsISystemMicrocontrolerUnit exposed by hardware components of type COMPONENT\_TYPE\_MICROCONTROLER\_UNIT
+Interface XPCOM nsISystemMicrocontrolerUnit exposed by hardware components of type COMPONENT\_TYPE\_MICROCONTROLER
 
 Member Data Documentation
 -------------------------
