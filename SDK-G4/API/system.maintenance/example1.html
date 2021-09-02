@@ -24,20 +24,45 @@
 				try {
 					this._logger = new window.Logger(name);
 					this._logger.log("RebootTestRunner");
+
+					if ("systemMaintenance" in window) {
+						this._maintenance = systemMaintenance;
+						this._nbReboots = this._maintenance.failsoftNbReboots;
+						this._maxReboots = this._maintenance.failsoftMaxReboots;
+						document.getElementById("NbReboots").innerText = "Number of successive reboots = " + this._nbReboots;
+						document.getElementById("MaxReboots").innerText = "Maximum of successive reboots = " + this._maxReboots;
+					} else {
+						this._maintenance = null;
+							this._logger.log("No systemMaintenance in window");
+					}
+
 				} catch (e) {
 					this._logger.errorEx(e);
 				}
 			}
 			RebootTestRunner.prototype = {
 				_reboot: function () {
-					systemMaintenance.reboot();
+					this._maintenance.reboot();
 				},
 
 				doReboot: function () {
 					try {
-						if ("systemMaintenance" in window) {
-							this._logger.log("Reboot in 60s");
-							window.setTimeout(this._reboot(), 60000);
+						if (this._maintenance) {
+							var upcomingFailSoftMode = false;
+							if (isNaN(this._nbReboots) || isNaN(this._maxReboots)) {
+								upcomingFailSoftMode = false;								
+							}
+							else {
+								upcomingFailSoftMode = ((this._maxReboots - this._nbReboots) <= 1)
+							}
+
+							if (!upcomingFailSoftMode) {
+								this._logger.log("Reboot in 60s");
+								setTimeout(this._reboot.bind(this), 60000);
+							}
+							else {
+								this._logger.log("Don't reboot to avoid Fail Soft Mode which is coming up");
+							}	
 						} else {
 							this._logger.log("No systemMaintenance in window");
 						}
@@ -51,11 +76,31 @@
 		})();
 
 	</script>
+
+	<style>
+		.varContainer {
+			font-size: 2em;
+			text-align: left;
+			height:auto
+		}
+
+		h1 {
+			font-size: 3em;
+		}
+
+		h2 {
+			font-size: 2em;
+			text-align: left;
+		}	
+	</style>
+
 </head>
 
 <body>
-	<h1>System reboot example</h1>
-	<div class="container"></div>
+	<h1>System reboot and Fail Soft Mode variables example</h1>
+	<h2>Current values of Fail Soft Mode variables :</h2>
+		<div class="varContainer" id="NbReboots"></div>
+		<div class="varContainer" id="MaxReboots"></div>
 	<textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
 </body>
 

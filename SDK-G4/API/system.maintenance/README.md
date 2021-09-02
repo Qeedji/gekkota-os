@@ -1,88 +1,106 @@
-nsISystemMaintenance Interface Reference
+nsISystemMaintenance interface Reference
 ========================================
-
-nsISystemMaintenance
-`import"nsISystemMaintenance.idl";`
-
-Inheritance diagram for nsISystemMaintenance:
-
-Public Member Functions
------------------------
-
--   void reboot ()
-
--   void crash ()
-
--   void infiniteLoop ()
-
--   void blockMainStack ()
-
--   void exec (in AUTF8String aCommand)
-
--   void callGC ()
 
 Public Attributes
 -----------------
 
+-   readonly attribute unsigned short failsoftNbReboots
+
+<!-- -->
+
+-   readonly attribute unsigned short failsoftMaxReboots
+
+<!-- -->
+
 -   readonly attribute nsISystemRequestFormat format
 
--   readonly attribute nsISystemRequestCommit commit
+<!-- -->
 
 -   readonly attribute nsISystemRequestCheckDataDisk checkDataDisk
 
+<!-- -->
+
 -   readonly attribute bool hasNonVolatileDataPartition
+
+-   void reboot ( )
+
+<!-- -->
+
+-   void crash ( )
+
+<!-- -->
+
+-   void infiniteLoop ( )
+
+<!-- -->
+
+-   void blockMainStack ( )
+
+<!-- -->
+
+-   void exec ( in AUTF8String aCommand)
+
+<!-- -->
+
+-   void callGC ( )
 
 Detailed Description
 --------------------
 
-The nsISystemMaintenance interface is the point of entry to carry out maintenance operations on the hardware platform running Gekkota. HTML example using reboot() [here.](example1.html)
+The nsISystemMaintenance interface is the point of entry to read internal variables of the Fail Soft Mode feature and to carry out maintenance operations on the hardware platform running Gekkota. HTML example getting Fail Soft Mode state and using reboot() [here.](example1.html)
 
-Member Function Documentation
------------------------------
+**Build note**: You need to execute the **build.cmd** file to generate the boostrap app. Otherwise there will be a mismatch between the html file name and the one the manifest tries to launch. Find more information in *SDK-G4/bootstrap App/* documentation.
 
-### blockMainStack()
+Member Data Documentation
+-------------------------
 
-blockMainStack
-nsISystemMaintenance
-nsISystemMaintenance
-blockMainStack
-`void nsISystemMaintenance::blockMainStack ( )`
+### readonly attribute unsigned short nsISystemMaintenance::failsoftNbReboots
 
-Block the main stack
+Current number of successive reboots counted in the Fail Soft Mode feature (see documentation about Fail Soft Mode)
 
-### callGC()
+### readonly attribute unsigned short nsISystemMaintenance::failsoftMaxReboots
 
-callGC
-nsISystemMaintenance
-nsISystemMaintenance
-callGC
-`void nsISystemMaintenance::callGC ( )`
+Maximal number of successive reboots to reach Fail Soft Mode level 1 (see documentation about Fail Soft Mode)
 
-Call Garbage collector
+### readonly attribute nsISystemRequestFormat nsISystemMaintenance::format
 
-### crash()
+Request used to format data volume
 
-crash
-nsISystemMaintenance
-nsISystemMaintenance
-crash
-`void nsISystemMaintenance::crash ( )`
+### readonly attribute nsISystemRequestCheckDataDisk nsISystemMaintenance::checkDataDisk
+
+Request used to check disk of data persitent data
+
+### readonly attribute bool nsISystemMaintenance::hasNonVolatileDataPartition
+
+get informed if the data partition exists
+
+void nsISystemMaintenance::reboot ()
+------------------------------------
+
+Reboot the device
+
+void nsISystemMaintenance::crash ()
+-----------------------------------
 
 Force a crash
 
-### exec()
+void nsISystemMaintenance::infiniteLoop ()
+------------------------------------------
 
-exec
-nsISystemMaintenance
-nsISystemMaintenance
-exec
-`void nsISystemMaintenance::exec (in AUTF8String aCommand)`
+Force a Loop
+
+void nsISystemMaintenance::blockMainStack ()
+--------------------------------------------
+
+Block the main stack
+
+void nsISystemMaintenance::exec (in AUTF8String aCommand)
+---------------------------------------------------------
 
 Execute a string command.
 
-**Parameters.**
-
 <table>
+<caption>Parameters</caption>
 <colgroup>
 <col width="20%" />
 <col width="80%" />
@@ -90,70 +108,18 @@ Execute a string command.
 <tbody>
 <tr class="odd">
 <td align="left">aCommand</td>
-<td align="left"><p>string command to be executed  </p></td>
+<td align="left"><p>string command to be executed</p></td>
 </tr>
 </tbody>
 </table>
 
-### infiniteLoop()
+void nsISystemMaintenance::callGC ()
+------------------------------------
 
-infiniteLoop
-nsISystemMaintenance
-nsISystemMaintenance
-infiniteLoop
-`void nsISystemMaintenance::infiniteLoop ( )`
+Call Garbage collector
 
-Force a Loop
+nsISystemRequestCheckDataDisk interface Reference
+=================================================
 
-### reboot()
-
-reboot
-nsISystemMaintenance
-nsISystemMaintenance
-reboot
-`void nsISystemMaintenance::reboot ( )`
-
-Reboot the device
-
-Member Data Documentation
--------------------------
-
-### checkDataDisk
-
-checkDataDisk
-nsISystemMaintenance
-nsISystemMaintenance
-checkDataDisk
-`readonly attribute nsISystemRequestCheckDataDisk nsISystemMaintenance::checkDataDisk`
-
-Request used to check disk of data persitent data
-
-### commit
-
-commit
-nsISystemMaintenance
-nsISystemMaintenance
-commit
-`readonly attribute nsISystemRequestCommit nsISystemMaintenance::commit`
-
-Request used to commit persitent data
-
-### format
-
-format
-nsISystemMaintenance
-nsISystemMaintenance
-format
-`readonly attribute nsISystemRequestFormat nsISystemMaintenance::format`
-
-Request used to format data volume
-
-### hasNonVolatileDataPartition
-
-hasNonVolatileDataPartition
-nsISystemMaintenance
-nsISystemMaintenance
-hasNonVolatileDataPartition
-`readonly attribute bool nsISystemMaintenance::hasNonVolatileDataPartition`
-
-get informed if the data partition exists
+nsISystemRequestFormat interface Reference
+==========================================

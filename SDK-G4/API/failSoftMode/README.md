@@ -51,12 +51,12 @@ The player is able to surveying unexpected player reboot. After several unexpect
 
 # Reboot number
 
-A variable &quot;reboot number&quot; counts the number of reboot inside a time Window.
+A variable &quot;reboot number&quot; counts the number of reboot inside a time Window. Its current value can be read in the **systemMaintenance.failsoftNbReboots** attribute (see documentation about nsISystemMaintenance interface).
 
 - The reboot number value to reach Fail Soft Mode level 1 is N.
 - The reboot number value to reach Fail Soft Mode level 2 is 2XN.
 
-N depends on platform.
+N depends on platform. Its value can be read in the **systemMaintenance.failsoftMaxReboots** attribute (see documentation about nsISystemMaintenance interface).
 
 | **Platform family** | **Platform** | **N (to reach Fail Soft Mode level1)** | **2N (to reach Fail Soft Mode level2)** |
 | --- | --- | --- | --- |
@@ -65,7 +65,7 @@ N depends on platform.
 | **SM2** | SMP200 | 4 | 8 |
 | **DM2** | DMC200 | 4 | 8 |
 | **DM3** | DMB300 | 4 | 8 |
-| **SM3** | SMA300 | 4 | 8 |
+| **SM3** | SMA300 | 6 | 12 |
 | **DM4** | DMB400 | 6 | 12 |
 
 - In case a reboots occurs in the time slot, the variable &quot;reboot number&quot; increases of 1
