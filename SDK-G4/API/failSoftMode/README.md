@@ -6,15 +6,15 @@ The goal of this document is to explain how does work the &quot; **Fail Soft Mod
 
 # Summary
     
-The Fail soft mode feature permits to stop playing device content when some instability is detected (several unexpected player reboots happen in few minutes).
+The Fail Soft Mode feature permits to stop playing device content when some instability is detected (several unexpected player reboots happen in few minutes).
 
-When the player is in Fail Soft mode,
-- A specific Fail soft mode pop-up is displayed on the screen
+When the player is in Fail Soft Mode,
+- A specific Fail Soft Mode pop-up is displayed on the screen
 - The green led (at the back of the player) is blinking by following a specific sequence
 
-To return to Normal mode, new publishing or App purging is required. Attention: most of time, unexpected reboots are certainly due to a specific media inserted in the playout and not supported by the player (it can be an audio-video media, or any other media), so it is advised to look for the wrong media and remove it before publishing again
+To return to Normal Mode, new publishing or App purging is required. Attention: most of time, unexpected reboots are certainly due to a specific media inserted in the playout and not supported by the player (it can be an audio-video media, or any other media), so it is advised to look for the wrong media and remove it before publishing again
 
-The Fail soft mode is a security feature implemented in Gekkota_os (except LCAN & EEEBOX) since Gekkota 3.12.15. For security reasons, the fail soft mode feature is automatic and can not be removed from the player
+The Fail Soft Mode is a security feature implemented in Gekkota_os since Gekkota 3.12.15. For security reasons, the Fail Soft Mode feature is automatic and can not be removed from the player
 
 
 # Strategy
@@ -32,15 +32,15 @@ The following players support **Fail Soft Mode** feature.
 
 | **Platform family** | **Software release version** |
 | --- | --- |
+| **DM4** | Gekkota\_os DMB400 4.10.10 (or later) |
+| **SM3** | Gekkota\_os SMA300 3.12.19 (or later) |
 | **SM2** | Gekkota\_os SMT210 3.12.15 (or later) |
 | **SM2** | Gekkota\_os SMA200 3.12.15 (or later) |
 | **SM2** | Gekkota\_os SMP200 3.12.15 (or later) |
 | **DM2\*** | Gekkota\_os DMC200 3.12.15 (or later) |
 | **DM3** | Gekkota\_os DMB300 3.12.15 (or later) |
-| **SM3** | Gekkota\_os SMA300 3.12.19 (or later) |
-| **DM4** | Gekkota\_os DMB400 4.10.10 (or later) |
 
-\*DMC200 players having Kontron electronic part whose BIOS revision is below NOW1R115 do not support Fail soft mode.
+\*DMC200 players having Kontron electronic part whose BIOS revision is below NOW1R115 do not support Fail Soft Mode.
 
 # Principe
 
@@ -60,13 +60,13 @@ N depends on platform. Its value can be read in the **systemMaintenance.failsoft
 
 | **Platform family** | **Platform** | **N (to reach Fail Soft Mode level1)** | **2N (to reach Fail Soft Mode level2)** |
 | --- | --- | --- | --- |
+| **DM4** | DMB400 | 6 | 12 |
+| **SM3** | SMA300 | 6 | 12 |
 | **SM2** | SMT210 | 4 | 8 |
 | **SM2** | SMA200 | 4 | 8 |
 | **SM2** | SMP200 | 4 | 8 |
 | **DM2** | DMC200 | 4 | 8 |
 | **DM3** | DMB300 | 4 | 8 |
-| **SM3** | SMA300 | 6 | 12 |
-| **DM4** | DMB400 | 6 | 12 |
 
 - In case a reboots occurs in the time slot, the variable &quot;reboot number&quot; increases of 1
 - In case &quot;reboot number&quot; is lower than N (N = 4 or N = 6) inside the time slot duration, the player is considered as to be in stable state and the &quot;reboot number&quot; is reset to 0
@@ -75,7 +75,7 @@ _Note: firmware downloads make &quot;reboot number&quot; increase of 1_
 
 _Note: &quot;restart player&quot; button of WebUI does not make &quot;reboot number&quot; increase of 1_
 
-# Generation of fail soft mode
+# Generation of Fail Soft Mode
 
 It is possible to generate a **Fail Soft Mode** by unplugging and plugging again the power supply N times (or 2N time). N is depending on the player type (explained in the table above)
 
@@ -83,12 +83,12 @@ ex:
 1. Iteration\_number = 0;
 2. Unplug and plug again the power supply and let the player booting up. The device green led is blinking ( **1 flash every 4 seconds** ),
 3. If Iteration\_number = N (in the table above), then go to the step 4, else go again to the step 2 (Iteration\_number + 1)
-4. The system screen Fail soft mode is displayed
+4. The system screen Fail Soft Mode is displayed
 
 5. Iteration\_number = N;
 6. Unplug and plug again the power supply and let the player booting up. The device green led is blinking ( **2 flashs every 4 seconds** ),
 7. If Iteration\_number = 2N (in the table above), then go to the step 8, else go again to the step 6 (Iteration\_number + 1)
-8. The system screen Fail soft mode is displayed
+8. The system screen Fail Soft Mode is displayed
 
 # Timer (time counter)
 
@@ -102,13 +102,13 @@ The time window is depending on 2 parameters
 
 | **Platform family** | **Platform** | **Default timeout value** |
 | --- | --- | --- |
+| **DM4** | DMB400 | 420 sec (7 minutes) |
+| **SM3** | SMA300 | 240 sec (4 minutes) |
 | **SM2** | SMT210 | 300 sec (5 minutes) |
 | **SM2** | SMA200 | 300 sec (5 minutes) |
 | **SM2** | SMP200 | 300 sec (5 minutes) |
 | **DM2** | DMC200 | 300 sec (5 minutes) |
 | **DM3** | DMB300 | 300 sec (5 minutes) |
-| **SM3** | SMA300 | 240 sec (4 minutes) |
-| **DM4** | DMB400 | 420 sec (7 minutes) |
 
 Additional NTP timeout value depending on
 
