@@ -1,0 +1,89 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>URL to local file</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script type="text/javascript">
+		(function () {
+			window.onload = function () {
+				var testRunner = new window.URLToFileRunner("example.urltofile");
+			};
+		})();
+
+		(function () {
+
+			var source_url = "https://fr.wikipedia.org/static/images/mobile/copyright/wikipedia.png";
+			var dest_file = "/.playout/wiki.png";
+
+			function URLToFileRunner(name) {
+				try {
+					this._logger = new window.Logger(name);
+					this._logger.log("URLToFileRunner");
+
+					this._destEntry = ioManager.getEntry(dest_file, null, null, ioManager.READWRITE);
+					if(!this._destEntry.exists) {
+  						this._destEntry.createFile();
+  						this._destEntry = ioManager.getEntry(dest_file, null, null, ioManager.READWRITE);
+					}
+
+					this._xhr = new XMLHttpRequest();
+					this._xhr.open("GET", source_url, true);
+					this._xhr.responseType = "arraybuffer";
+					this._xhr.onload = this.rcvData.bind(this);
+					this._xhr.onerror = this.rcvError.bind(this);
+					this._xhr.send(null);
+				} catch (e) {
+					this._logger.errorEx(e);
+				}
+			}
+
+
+			URLToFileRunner.prototype = {
+				
+				rcvData: function () {
+					this._logger.log("XHR onload");
+					if (this._xhr.readyState === 4) {
+						if (this._xhr.status === 200) {
+							var buffer = this._xhr.response;
+							var stream = ioManager.newInputStreamFromArrayBuffer(buffer.byteLength, buffer);
+							this._logger.log("Stream size = " + stream.available());
+							this._destEntry.asyncPut(stream, 0, stream.available(), 
+								(rv, written) => {
+									if (rv === 0) {
+										this._logger.log("AsyncPut OK");
+									} else {
+										this._logger.log("AsyncPut fails");
+										this._logger.error(rv.toString());
+									}
+								});
+						} else {
+							this._logger.log("XHR status = " + this._xhr.status);
+							this._logger.error(this._xhr.statusText);
+						}
+					}  else {
+						this._logger.log("XHR readyState = " + this._xhr.readyState);
+						this._logger.error(this._xhr.statusText);
+					}
+				},
+
+				rcvError: function () {
+					this._logger.log("XHR error");
+					this._logger.error(this._xhr.statusText);
+				},					
+
+			};
+
+			window.URLToFileRunner = URLToFileRunner;
+		})();
+
+	</script>
+</head>
+
+<body>
+	<h1>URL to local file</h1>
+	<textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+</html>
