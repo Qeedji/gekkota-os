@@ -1,23 +1,58 @@
-# Configuration of an App via the device's `WebUi`
+# Configuration of an App with the device Web user interface
 
-This example is used to configure the App using an HTML page displayed in the device's `WebUI`.
+## Overview
+This App shows how to configure an `App` by sending parameter with the device Web user interface. 
 
-## Principles
+In the example, the `App` (`app.html`) is displaying on the device screen a Web page with only a text (by default `Change the message to be displayed`) in the middle of the page . 
 
-This page, named `index.html` is placed in the directory of the App. When you access the device's `WebUI`, it is displayed. You can define the configuration of the App there. During validation, the configuration is sent by an `XmlHttpRequest` in the form of a JSON file named `app-config.json` in the directory of the App. Saving the configuration in a JSON file is just an example, the App can naturally use any other format to store its configuration on the device.
+To send information to the App, connect to the device Web user interface and go to the `http://<device_IP_addr>/.playout/` App directory. The `index.html` page is displaying:
+- a *Message to display* input,
+- a *Validate* button
+- an *Administration Console* link, shortcut to `http://<device_IP_addr>/.admin/`, to access to the device *Administration console*. 
 
-For its part, the `app.html` retrieves the configuration from the JSON file `app-config.json` via an `XmlHttpRequest`. 
-It can also follow changes to the configuration live by setting up a listening mode on its main directory (with a `FileSystemWatcher` object).
+In the *Message to display* input, type a new text (that will be then displayed on the device screen). For example, type *new text*. 
+Then click on the `Validate` button.
+On the device screen, the *Change the message to be displayed* text is straight now replaced by the *new text* text.
 
-The conservation of the configuration during subsequent installations of the App is obtained by adding the attribute `refresh = "none"` to the `app-config.json` entry in the manifest file `manifest.xml`.
+## Technical principles
 
-## App example
+An `index.html` is put in the `http://<device_IP_addr>/.playout/` App directory. When you access the device Web user interface, the `index.html` Web page is displayed automatically. When clicking on the `Validate` button, the `app-config.json` App configuration is sent by an `XmlHttpRequest` in the App directory. 
 
-In the example provided, the WebUI simply allows you to modify the message displayed by the App on the device screen.
+*Saving the App configuration into a JSON file is just for example; the App can support any other format to store the App configuration.*
 
-In `index.html`, a link named "Administration Console" provides access to the standard administration page of the device's WebUI.
+*If required, the App configuration could be done using another directory.*
 
-It is possible to record debugging messages from the App by adding the entry `app.configuration-by-webui` in the `maintenance->Logs` tab of the device's WebUI.
+At its end, the `App` (`app.html`) retrieves the `app-config.json` App configuration with an `XmlHttpRequest`. 
+
+*To avoid to restart the App so that the App configuration is taken into account, it is possible to set up a listening mode on the App directory with a `FileSystemWatcher` object.*
+
+When the App configuration must not be overwritten the App is reinstalled, add the ```refresh = "none"``` in the `manifest.xml` manifest file like explained:
+
+```Javascript
+Manifest.xml example
+<?xml version="1.0" encoding="UTF-8"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <Description about="ns.innes.gekkota.manifest#metadata"
+        xmlns:cms="ns.innes.custom">
+        <cms:app-name>configuration-by-webui</cms:app-name>
+        <cms:app-version>1.10.10</cms:app-version>
+    </Description>
+    <Description about="ns.innes.gekkota.manifest#cache">
+        <Bag>
+            <li>app.html</li>
+            <li>index.html</li>
+            <li>libs/</li>
+            <li refresh="none">app-config.json</li>
+        </Bag>
+    </Description>
+    <Description about="ns.innes.gekkota.manifest#launcher"
+        xmlns:gktm="ns.innes.gekkota.manifest">
+        <gktm:bootstrap>app.html</gktm:bootstrap>
+    </Description>
+</RDF>
+```
+
+It is possible to print logs from the App by adding the entry `app.configuration-by-webui` in the `Maintenance > Logs` menu of the device Web user interface.
 
 ## Compatibility
 
