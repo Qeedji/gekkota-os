@@ -31,6 +31,10 @@
 			text-align: center;
 			padding-top: 25%;
 		}
+        #field1 {
+			font-size: 2em;
+			text-align: center;
+		}
 	</style>
 
 	<script>
@@ -54,6 +58,7 @@
             var index = document.URL.lastIndexOf("/")
             rootPath = document.URL.substring(0, index)
             getMessage();
+            getField1();
             watcher = new FileSystemWatcher({
                 listener: new FileMonitorListener(),
                 recursive: false,
@@ -83,6 +88,7 @@
              if (aFilePath == CONFIG_FILE)
              {
                  getMessage();
+                 getField1();
              }
             },
             onFileSystemAdded: function (aFilePath) {
@@ -90,6 +96,7 @@
              if (aFilePath == CONFIG_FILE)
              {
                  getMessage();
+                 getField1();
              }
             }
         };
@@ -106,7 +113,7 @@
                     {
                         var config = xhr.response;
                         log ("config.message = " + config.message)
-                        document.getElementById("message").textContent = config.message
+                        document.getElementById("message").textContent = "message = '" + config.message + "'"
                     }
                 }
                 xhr.onerror = function () {
@@ -119,6 +126,10 @@
                 log("Exception  " + ex, 2);
             }
         }
+        function getField1()
+        {
+            document.getElementById("field1").textContent = "field1 = '" + systemGeneralSettings.field1 + "'";
+        }
 
 	</script>
 </head>
@@ -127,6 +138,9 @@
 	<div id="main">
         <div id="message">
             Change this message with the device WebUI
+        </div>
+        </p>
+        <div id="field1">
         </div>
     </div>
 </body>

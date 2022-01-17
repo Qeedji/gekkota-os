@@ -3,16 +3,21 @@
 ## Overview
 This App shows how to configure an `App` by sending parameter with the device Web user interface. 
 
-In the example, the `App` (`app.html`) is displaying on the device screen a Web page with only a text (by default `Change the message to be displayed`) in the middle of the page . 
+In the example, the `App` (`app.html`) is displaying on the device screen a Web page with a text (by default `Change the message to be displayed`) in the middle of the page . 
 
 To send information to the App, connect to the device Web user interface and go to the `http://<device_IP_addr>/.playout/` App directory. The `index.html` page is displaying:
-- a *Message to display* input,
+- the MAC address of the device
+- a *Message to display* input
+- the current value of the variable *field1*
 - a *Validate* button
+- a *Reboot* button
 - an *Administration Console* link, shortcut to `http://<device_IP_addr>/.admin/`, to access to the device *Administration console*. 
 
 In the *Message to display* input, type a new text (that will be then displayed on the device screen). For example, type *new text*. 
 Then click on the `Validate` button.
 On the device screen, the *Change the message to be displayed* text is straight now replaced by the *new text* text.
+
+You can also call the Gekkota API from `index.html`: here is shown how to get/set the *nsISystemGeneralSettings.field1* attribute and how to reboot the device.
 
 ## Technical principles
 

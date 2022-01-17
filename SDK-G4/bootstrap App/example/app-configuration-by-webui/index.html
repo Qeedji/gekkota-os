@@ -39,7 +39,81 @@
 	<script>
 
 		//=============================================================================
-        function validate() {
+        function callMethod(method, args)
+        {
+            return new Promise(function(resolve, reject)  {
+                try {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "/.admin/", true);
+                    xhr.setRequestHeader('Content-type','application/json+rpc; charset=utf-8');
+                    xhr.onerror = function () {
+                        reject();
+                    }
+                    xhr.onload = function () {
+                        if (xhr.readyState == 4 && Math.trunc(xhr.status / 100) === 2)
+                        {
+                            if (xhr.status == 200)
+                            {
+                                let r = JSON.parse(xhr.response)
+                                resolve(r);
+                            }
+                            else{
+                                resolve("")
+                            }
+                        }
+                        else
+                        {
+                            reject();
+                        }
+                    }
+                    var data = {
+                        target:method,
+                        args:args
+                    };
+                    var json = JSON.stringify(data);
+                    xhr.send(json);
+                }
+                catch (ex) {
+                    reject();
+                } 
+            });
+        }
+        async function getField1()
+        {
+            try {
+                let value = await callMethod("nsISystemGeneralSettings.field1");
+                document.getElementById("field1").value = value;
+            }
+            catch (ex)
+            {
+
+            }
+        }
+        async function setField1()
+        {
+            try {
+                let value = document.getElementById("field1").value;
+                await callMethod("nsISystemGeneralSettings.field1", [value]);
+                await callMethod("nsIPref.savePrefFile", [null]);
+            }
+            catch (ex)
+            {
+
+            }
+        }
+        async function getMac()
+        {
+            try {
+                let mac = await callMethod("nsISystemGeneralSettings.mac");
+                let string = await callMethod(mac + ".stringAddress");
+                document.getElementById("mac").value = string;
+            }
+            catch (ex)
+            {
+
+            }
+        }
+        function sendConfig() {
             var url = "/.playout/app-config.json"
             try {
                 var xhr = new XMLHttpRequest();
@@ -57,18 +131,39 @@
             catch (ex) {
             }
         }
+        function validate() {
+            try {
+                sendConfig();
+                setField1();
+            }
+            catch (ex) {
+            }
+        }
+        function reboot() {
+            callMethod("nsISystemMaintenance.reboot");
+        }
+        function load()
+        {
+            getMac();
+            getField1();
+        }
 
 	</script>
 </head>
 
-<body onload="load()" onunload="unload()">
+<body onload="load()">
     <div id="top">
         <a id="admin" href="/../.admin/">Administration console</a>
     </div>
 	<div id="main">
+        <label for="mac">MAC Address</label>
+        <input id="mac" type="text" size=16 disabled/> </p>
         <label for="message">Message to display</label>
-        <input id="message" type="text" size=50 />
-        <input type="button" id="validate"/ value="Validate" onclick="validate()">
+        <input id="message" type="text" size=50 /> </p>
+        <label for="message">Variable 'field1'</label>
+        <input id="field1" type="text" size=50 /> </p>
+        <input type="button" id="validate" value="Validate" onclick="validate()"></p>
+        <input type="button" id="reboot" value="Reboot" onclick="reboot()">
     </div>
 </body>
 
