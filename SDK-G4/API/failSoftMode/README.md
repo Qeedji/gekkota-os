@@ -2,7 +2,7 @@
 
 # Goal of the document
 
-The goal of this document is to explain how does work the &quot; **Fail Soft Mode**&quot; feature.
+The goal of this document is to explain how does work the &quot;**Fail Soft Mode**&quot; feature.
 
 # Summary
     
@@ -46,7 +46,7 @@ The following players support **Fail Soft Mode** feature.
 
 The player is able to surveying unexpected player reboot. After several unexpected reboots, the player detects stability anomaly:
 
-1. The player can clear the playout content and wait for new content ( **Fail Soft Mode level1** )
+1. The player can clear the playout content and wait for new content ( **Fail Soft Mode level1** ). If the player is configured to pull a GAP (Gekkota Application Package) file from a server, this GAP file is automatically downloaded and reinstalled after clean-up.
 2. Despite of that, in case the player does not keep rebooting again, the player is able to restore user preference (saved before the player is unstable) and wait for new content ( **Fail Soft Mode level2** )
 
 # Reboot number
