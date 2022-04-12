@@ -40,6 +40,9 @@ The LDAP service allows to send synchronous and asynchronous search queries to a
 **messaging.smtp:**
 The SMTP API provides a set of interfaces to manage messaging via the SMTP protocol.
 
+**network.networkRequest:**
+The NetworkRequest API allows to download URL and to retrieve information about remote resources (exist, etag, size).
+
 **network.udpSocket:**
 The UDP Socket API provides some methods to send UDP datagrams to unicast or multicast addresses.
 It is possible to join and leave a multicast group.

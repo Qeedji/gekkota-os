@@ -1,0 +1,126 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>URL to local file</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script type="text/javascript">
+		(function () {
+			window.onload = function () {
+				var testRunner = new window.URLToFileRunner("example.urltofile");
+			};
+		})();
+
+		(function () {
+
+			var source_url = "https://fr.wikipedia.org/static/images/mobile/copyright/wikipedia.png";
+			var dest_file = "wiki.png";
+
+
+			function RequestObserver(resolve, reject, logger)
+			{
+				this.resolve = resolve;
+				this.reject = reject;
+				this._logger = logger;
+			}
+
+			RequestObserver.prototype = {
+
+				SetRequest: function(request)
+				{
+					this._request=request;
+				}, 
+
+				onStartRequest : function(request, context)
+				{
+					this._logger.log("onStartRequest " + request.uriSpec);
+				},
+
+				onStopRequest : function(request, context, statusCode, statusText)
+				{
+					this._logger.log("onStopRequest " + request.uriSpec + ". Status = " + statusCode);
+
+					var str = (statusCode == 0) ? "OK" :
+						(statusCode==Cr.NS_ERROR_FILE_TARGET_DOES_NOT_EXIST) ? "NOT FOUND" : "ABORT";
+					this._logger.log(str);
+					if (statusCode == 0)
+					{
+						this.resolve(request)
+					}
+					else
+					{
+						this.reject(request);
+					}
+				},
+
+			}
+
+			function ProgressObserver(logger)
+				{
+				this._logger = logger;
+			}
+
+			ProgressObserver.prototype = {
+
+				onProgress: function(aRequest, aContext, aProgress, aProgressMax) 
+				{
+					this._logger.log("onProgress: " + aProgress + "/" + aProgressMax);
+				},
+
+				onStatus: function(aRequest, aContext, aStatus, aStatusArg) 
+				{ 
+					this._logger.log("onStatus: " + aStatus);
+				},
+			}
+
+
+			function URLToFileRunner(name) {
+				try {
+					this._logger = new window.Logger(name);
+					this._logger.log("URLToFileRunner");
+					this._src_url = source_url;
+					this._dest_file = dest_file;
+					this.launch_download();
+				} catch (e) {
+					this._logger.errorEx(e);
+				}
+			}
+
+
+			URLToFileRunner.prototype = {
+				
+				resolve: function () {
+					this._logger.log("Download request resolved");
+				},
+
+				reject: function () {
+					this._logger.log("Download request rejected");
+				},	
+				
+				launch_download: function () {
+					this._logger.log("Create download request for " + this._src_url);
+					this._observer = new RequestObserver(this.resolve.bind(this), this.reject.bind(this), this._logger);
+					let request = new NetworkRequest(this._src_url, this._observer, null, null);	
+					request.verifyDownload = false;	
+					this._observer.SetRequest(request);
+					let dest_url = new URL(this._dest_file, location.href);
+					this._progress_observer = new ProgressObserver(this._logger);
+					this._logger.log("Start downloading to " + dest_url.href);
+      				request.download(dest_url, 0, this._progress_observer);		
+				},				
+
+			};
+
+			window.URLToFileRunner = URLToFileRunner;
+		})();
+
+	</script>
+</head>
+
+<body>
+	<h1>URL to local file</h1>
+	<textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+</html>
