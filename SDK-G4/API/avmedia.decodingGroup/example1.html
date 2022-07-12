@@ -29,9 +29,12 @@
 
 					this.main_1 = document.createElement('video');
 					this.main_1.addEventListener("ended", this.loadMain2.bind(this));
+					this.main_1.addEventListener("error", this.loadMain2.bind(this));					
 					this.main_1.addEventListener("canplay", this.startMain1.bind(this));
+					this.main = 0;
 					this.main_2 = document.createElement('video');
 					this.main_2.addEventListener("ended", this.loadMain1.bind(this));
+					this.main_2.addEventListener("error", this.loadMain1.bind(this));					
 					this.main_2.addEventListener("canplay", this.startMain2.bind(this));
 					main_sequence = document.getElementById("main_container");
 					main_sequence.appendChild(this.main_1);
@@ -44,9 +47,12 @@
 						document.body.appendChild(this.pip_container);
 						this.pip_1 = document.createElement('video');
 						this.pip_1.addEventListener("ended", this.loadPip2.bind(this));
+						this.pip_1.addEventListener("error", this.loadPip2.bind(this));
 						this.pip_1.addEventListener("canplay", this.startPip1.bind(this));
+						this.pip = 0;
 						this.pip_2 = document.createElement('video');
 						this.pip_2.addEventListener("ended", this.loadPip1.bind(this));
+						this.pip_2.addEventListener("error", this.loadPip1.bind(this));
 						this.pip_2.addEventListener("canplay", this.startPip2.bind(this));
 						this.pip_container.appendChild(this.pip_1);
 						this.pip_container.appendChild(this.pip_2);
@@ -59,10 +65,13 @@
 
 				loadMain1: function () {
 					try {
+						if (this.main == 1)
+							return;
 						if (this.uhd_enabled)
 							this.main_1.src = "videoUHD_1.mp4";
 						else
 							this.main_1.src = "video_1.mp4";		                                       
+						this.main = 1;			                                       
 					} catch (error) {
 						this._logger.errorEx(error);
 					}
@@ -79,10 +88,13 @@
 
 				loadMain2: function () {
 					try {
+						if (this.main == 2)
+							return;						
 						if (this.uhd_enabled)
 							this.main_2.src = "videoUHD_2.mp4";
 						else
 							this.main_2.src = "video_2.mp4";	       
+							this.main = 2;		       
 					} catch (error) {
 						this._logger.errorEx(error);
 					}
@@ -99,7 +111,10 @@
 
 				loadPip1: function () {
 					try {
+						if (this.pip == 1)
+							return;							
 						this.pip_1.src = "video_1.mp4";                                       
+						this.pip = 1;                                       
 					} catch (error) {
 						this._logger.errorEx(error);
 					}
@@ -116,7 +131,10 @@
 
 				loadPip2: function () {
 					try {
+						if (this.pip == 2)
+							return;								
 						this.pip_2.src = "video_2.mp4";         
+						this.pip = 2;          
 					} catch (error) {
 						this._logger.errorEx(error);
 					}
