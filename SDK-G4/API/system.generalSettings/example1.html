@@ -42,7 +42,7 @@
 				logMac: function () {
 					try {
 						if ("systemGeneralSettings" in window) {
-							this._logger.log("logMac : " + systemGeneralSettings.mac.stringAddress);
+							this._logger.log("Mac : " + systemGeneralSettings.mac.stringAddress);
 						} else {
 							this._logger.log("No systemGeneralSettings in window");
 						}
@@ -53,7 +53,7 @@
 				logPsn: function () {
 					try {
 						if ("systemGeneralSettings" in window) {
-							this._logger.log("logPsn : " + systemGeneralSettings.psn);
+							this._logger.log("Psn : " + systemGeneralSettings.psn);
 						} else {
 							this._logger.log("No systemGeneralSettings in window");
 						}
@@ -64,7 +64,7 @@
 				logUuid: function () {
 					try {
 						if ("systemGeneralSettings" in window) {
-							this._logger.log("logUuid : " + systemGeneralSettings.uuid);
+							this._logger.log("Uuid : " + systemGeneralSettings.uuid);
 						} else {
 							this._logger.log("No systemGeneralSettings in window");
 						}
@@ -75,7 +75,7 @@
 				logVersion: function () {
 					try {
 						if ("systemGeneralSettings" in window) {
-							this._logger.log("logVersion : " + systemGeneralSettings.version);
+							this._logger.log("Version : " + systemGeneralSettings.version);
 						} else {
 							this._logger.log("No systemGeneralSettings in window");
 						}
@@ -86,7 +86,7 @@
 				logPlatform: function () {
 					try {
 						if ("systemGeneralSettings" in window) {
-							this._logger.log("logPlatform : " + systemGeneralSettings.platform);
+							this._logger.log("Platform : " + systemGeneralSettings.platform);
 						} else {
 							this._logger.log("No systemGeneralSettings in window");
 						}
@@ -98,7 +98,7 @@
 					try {
 						if ("systemGeneralSettings" in window) {
 							var hdcpInfo = systemGeneralSettings.hdcp;
-							this._logger.log("logHdcpInfo supported : " + hdcpInfo.supported);
+							this._logger.log("HdcpInfo supported : " + hdcpInfo.supported);
 							this._logger.log("Version : " + hdcpInfo.version);
 							this._logger.log("KeyStatus : " + hdcpInfo.keyStatus);
 						} else {
@@ -111,7 +111,7 @@
 				logField1: function () {
 					try {
 						if ("systemGeneralSettings" in window) {
-							this._logger.log("logField1 : " + systemGeneralSettings.field1);
+							this._logger.log("Field1 value: " + systemGeneralSettings.field1);
 						} else {
 							this._logger.log("No systemGeneralSettings in window");
 						}
@@ -122,7 +122,7 @@
 				logField2: function () {
 					try {
 						if ("systemGeneralSettings" in window) {
-							this._logger.log("logField2 value : " + systemGeneralSettings.field2);
+							this._logger.log("Field2 value : " + systemGeneralSettings.field2);
 						} else {
 							this._logger.log("No systemGeneralSettings in window");
 						}
@@ -133,7 +133,7 @@
 				logField3: function () {
 					try {
 						if ("systemGeneralSettings" in window) {
-							this._logger.log("logField3 value : " + systemGeneralSettings.field3);
+							this._logger.log("Field3 value : " + systemGeneralSettings.field3);
 						} else {
 							this._logger.log("No systemGeneralSettings in window");
 						}
@@ -144,7 +144,7 @@
 				logField4: function () {
 					try {
 						if ("systemGeneralSettings" in window) {
-							this._logger.log("logField4 value : " + systemGeneralSettings.field4);
+							this._logger.log("Field4 value : " + systemGeneralSettings.field4);
 						} else {
 							this._logger.log("No systemGeneralSettings in window");
 						}
@@ -155,7 +155,7 @@
 				logField5: function () {
 					try {
 						if ("systemGeneralSettings" in window) {
-							this._logger.log("logField5 value : " + systemGeneralSettings.field5);
+							this._logger.log("Field5 value : " + systemGeneralSettings.field5);
 						} else {
 							this._logger.log("No systemGeneralSettings in window");
 						}
