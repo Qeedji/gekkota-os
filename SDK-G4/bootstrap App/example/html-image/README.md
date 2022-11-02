@@ -4,4 +4,6 @@ This is an example to play an image:
   
 The manifest file lists these files and launches the app.html file.
 
-The build.cmd file is used to build (or rebuild) the bootstrap archive.
+The build.cmd file is used to build (or rebuild) the bootstrap archive as a tarball.
+
+The buildGAP.cmd file is used to build (or rebuild) the bootstrap archive as a GAP (Gekkota Aplication Package), which is a zip file with .gap extension.
